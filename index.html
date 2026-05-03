@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>King Barber — Kraliyet Kesimi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-king">KING</span>
+        <span class="logo-barber">BARBER</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#services" class="nav-link">Hizmetler</a></li>
+        <li><a href="#about" class="nav-link">Hakkımızda</a></li>
+        <li><a href="#gallery" class="nav-link">Galeri</a></li>
+        <li><a href="#team" class="nav-link">Ekip</a></li>
+        <li><a href="#contact" class="nav-link">İletişim</a></li>
+        <li><a href="#appointment" class="nav-cta">Randevu Al</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-overlay"></div>
+      <div class="hero-particles" id="particles"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-line"></span>
+        <span>EST. 2015</span>
+        <span class="badge-line"></span>
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line" data-text="KRALIYET">KRALIYET</span>
+        <span class="title-line gold" data-text="KESİMİ">KESİMİ</span>
+      </h1>
+      <p class="hero-subtitle">Sadece bir kesim değil — bir deneyim. Her müşterimiz kral gibi ayrılır.</p>
+      <div class="hero-actions">
+        <a href="#appointment" class="btn-primary">
+          <span>Randevu Al</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#services" class="btn-ghost">
+          <span>Hizmetleri Keşfet</span>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" data-target="5000">0</span><span class="stat-plus">+</span>
+          <span class="stat-label">Mutlu Müşteri</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="10">0</span><span class="stat-plus">+</span>
+          <span class="stat-label">Yıl Tecrübe</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number" data-target="15">0</span><span class="stat-plus">+</span>
+          <span class="stat-label">Ödül</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee Banner -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span>PROFESYONEL KESİM</span>
+      <span class="marquee-dot">✦</span>
+      <span>SAÇ & SAKAL BAKIMI</span>
+      <span class="marquee-dot">✦</span>
+      <span>KRALİYET DENEYİMİ</span>
+      <span class="marquee-dot">✦</span>
+      <span>KING BARBER</span>
+      <span class="marquee-dot">✦</span>
+      <span>PROFESYONEL KESİM</span>
+      <span class="marquee-dot">✦</span>
+      <span>SAÇ & SAKAL BAKIMI</span>
+      <span class="marquee-dot">✦</span>
+      <span>KRALİYET DENEYİMİ</span>
+      <span class="marquee-dot">✦</span>
+      <span>KING BARBER</span>
+      <span class="marquee-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Hizmetlerimiz</span>
+        <h2 class="section-title">Her İhtiyaç İçin<br /><em>Özel Çözümler</em></h2>
+        <p class="section-desc">Geleneksel berberliği modern tekniklerle birleştirerek size en iyi deneyimi sunuyoruz.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card" data-aos="fade-up" data-delay="0">
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="20" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 56c0-11 9-20 20-20s20 9 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M44 28l8 4-4 8" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="service-content">
+            <h3>Klasik Saç Kesimi</h3>
+            <p>Zamanın ötesine geçen klasik erkek saç kesimi. Her yüz şekline özel tasarım.</p>
+            <div class="service-price">
+              <span class="price">₺250</span>
+              <span class="duration">30 dk</span>
+            </div>
+          </div>
+          <div class="service-hover">
+            <a href="#appointment" class="service-btn">Randevu Al</a>
+          </div>
+        </div>
+
+        <div class="service-card featured" data-aos="fade-up" data-delay="100">
+          <div class="service-badge">Popüler</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><rect x="16" y="8" width="32" height="48" rx="4" stroke="currentColor" stroke-width="2"/><path d="M24 24h16M24 32h16M24 40h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M36 52l4-4 4 4" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="service-content">
+            <h3>Saç + Sakal Paketi</h3>
+            <p>Komple bakım paketi. Saç kesimi, sakal tıraşı ve yüz bakımı bir arada.</p>
+            <div class="service-price">
+              <span class="price">₺450</span>
+              <span class="duration">60 dk</span>
+            </div>
+          </div>
+          <div class="service-hover">
+            <a href="#appointment" class="service-btn">Randevu Al</a>
+          </div>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-delay="200">
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><path d="M20 44C20 44 16 36 16 28a16 16 0 0132 0c0 8-4 16-4 16" stroke="currentColor" stroke-width="2"/><path d="M24 44h16l-2 8H26l-2-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M26 28c2-4 10-4 12 0" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="service-content">
+            <h3>Sakal Tasarım</h3>
+            <p>Yüz hatlarınıza uygun profesyonel sakal şekillendirme ve tasarım.</p>
+            <div class="service-price">
+              <span class="price">₺200</span>
+              <span class="duration">25 dk</span>
+            </div>
+          </div>
+          <div class="service-hover">
+            <a href="#appointment" class="service-btn">Randevu Al</a>
+          </div>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-delay="300">
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><path d="M32 12C20 12 12 20 12 32s8 20 20 20 20-8 20-20-8-20-20-20z" stroke="currentColor" stroke-width="2"/><path d="M22 32c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="32" r="3" fill="#C9A84C"/></svg>
+          </div>
+          <div class="service-content">
+            <h3>Kral Tıraşı</h3>
+            <p>Geleneksel ustura ile yapılan hot towel tıraş. Safi rahatlama deneyimi.</p>
+            <div class="service-price">
+              <span class="price">₺300</span>
+              <span class="duration">45 dk</span>
+            </div>
+          </div>
+          <div class="service-hover">
+            <a href="#appointment" class="service-btn">Randevu Al</a>
+          </div>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-delay="400">
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><path d="M32 8l4 12h13l-10 7 4 12-11-8-11 8 4-12-10-7h13z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M24 48v8M40 48v8" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="service-content">
+            <h3>VIP Bakım Paketi</h3>
+            <p>Saç, sakal, yüz maskesi, kafa masajı ve içecek servisi dahil premium paket.</p>
+            <div class="service-price">
+              <span class="price">₺750</span>
+              <span class="duration">90 dk</span>
+            </div>
+          </div>
+          <div class="service-hover">
+            <a href="#appointment" class="service-btn">Randevu Al</a>
+          </div>
+        </div>
+
+        <div class="service-card" data-aos="fade-up" data-delay="500">
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><path d="M16 48V28l16-16 16 16v20H16z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="26" y="36" width="12" height="12" rx="1" stroke="currentColor" stroke-width="2"/><path d="M32 20v4" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="service-content">
+            <h3>Öğrenci Kesimi</h3>
+            <p>Öğrencilere özel indirimli paket. Kalite fark etmez, bütçe fark eder.</p>
+            <div class="service-price">
+              <span class="price">₺150</span>
+              <span class="duration">30 dk</span>
+            </div>
+          </div>
+          <div class="service-hover">
+            <a href="#appointment" class="service-btn">Randevu Al</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-image-frame">
+            <div class="about-img-placeholder">
+              <div class="barber-illustration">
+                <svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="50" y="60" width="200" height="300" rx="20" fill="#1a1a1a" stroke="#C9A84C" stroke-width="1"/>
+                  <circle cx="150" cy="130" r="45" fill="#2a2a2a" stroke="#C9A84C" stroke-width="1.5"/>
+                  <path d="M105 180 Q150 210 195 180 L200 320 H100 Z" fill="#2a2a2a" stroke="#C9A84C" stroke-width="1"/>
+                  <path d="M120 130 Q150 100 180 130" stroke="#C9A84C" stroke-width="2" fill="none"/>
+                  <circle cx="137" cy="135" r="5" fill="#C9A84C"/>
+                  <circle cx="163" cy="135" r="5" fill="#C9A84C"/>
+                  <path d="M140 150 Q150 158 160 150" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <rect x="120" y="250" width="60" height="8" rx="4" fill="#C9A84C" opacity="0.6"/>
+                  <rect x="130" y="268" width="40" height="6" rx="3" fill="#C9A84C" opacity="0.4"/>
+                  <path d="M80 300 Q150 340 220 300" stroke="#C9A84C" stroke-width="1" fill="none" opacity="0.3"/>
+                </svg>
+              </div>
+            </div>
+            <div class="about-floating-card card-1">
+              <span class="floating-number">10+</span>
+              <span class="floating-text">Yıl Tecrübe</span>
+            </div>
+            <div class="about-floating-card card-2">
+              <span class="floating-number">⭐ 4.9</span>
+              <span class="floating-text">Google Puan</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-content" data-aos="fade-left">
+          <span class="section-tag">Hakkımızda</span>
+          <h2 class="section-title">Her Kesimde<br /><em>Mükemmeliyeti</em> Arıyoruz</h2>
+          <p class="about-text">2015 yılında kurulan King Barber, İstanbul'un kalbinde prestijli bir erkek bakım merkezi olarak hizmet vermektedir. Geleneksel berberin sanatını modern tekniklerle harmanlayarak, her müşterimize kişiselleştirilmiş bir deneyim sunuyoruz.</p>
+          <p class="about-text">Sadece saç kesmiyoruz — güveninizi ve stilinizi şekillendiriyoruz. Aynaya baktığınızda gördüğünüz kişiden gurur duymanızı istiyoruz.</p>
+          <div class="about-features">
+            <div class="feature-item">
+              <div class="feature-check">✓</div>
+              <span>Premium ürünler ve hijyenik ekipmanlar</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">✓</div>
+              <span>Deneyimli ve sertifikalı berber ekibi</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">✓</div>
+              <span>Online randevu ile bekleme yok</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">✓</div>
+              <span>Her müşteriye özel stil danışmanlığı</span>
+            </div>
+          </div>
+          <a href="#appointment" class="btn-primary">
+            <span>Hemen Randevu Al</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Galeri</span>
+        <h2 class="section-title">İşlerimizden<br /><em>Seçmeler</em></h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item large" data-aos="zoom-in">
+          <div class="gallery-placeholder g1">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Fade & Taper</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-aos="zoom-in" data-delay="100">
+          <div class="gallery-placeholder g2">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Klasik Pompadour</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-aos="zoom-in" data-delay="200">
+          <div class="gallery-placeholder g3">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Sakal Tasarım</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-aos="zoom-in" data-delay="300">
+          <div class="gallery-placeholder g4">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Modern Undercut</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item" data-aos="zoom-in" data-delay="400">
+          <div class="gallery-placeholder g5">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Buzz Cut</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-item large-tall" data-aos="zoom-in" data-delay="500">
+          <div class="gallery-placeholder g6">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">VIP Deneyimi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="team" id="team">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Ekibimiz</span>
+        <h2 class="section-title">Ustalarımızla<br /><em>Tanışın</em></h2>
+        <p class="section-desc">Her birinin elinde ustalık, kalbinde tutku var.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-card" data-aos="fade-up">
+          <div class="team-photo">
+            <div class="team-avatar">
+              <svg viewBox="0 0 120 160" fill="none"><circle cx="60" cy="55" r="30" fill="#2a2a2a" stroke="#C9A84C" stroke-width="1.5"/><path d="M20 140c0-22 18-40 40-40s40 18 40 40" fill="#1a1a1a" stroke="#C9A84C" stroke-width="1.5"/><path d="M45 55 Q60 42 75 55" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="52" cy="60" r="3" fill="#C9A84C"/><circle cx="68" cy="60" r="3" fill="#C9A84C"/><path d="M54 72 Q60 78 66 72" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="team-social">
+              <span>@kingbarber_ahmet</span>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>Ahmet Yılmaz</h3>
+            <span class="team-role">Baş Berber & Kurucu</span>
+            <p>15 yıllık deneyimiyle klasik ve modern kesim tekniklerinin ustası.</p>
+            <div class="team-skills">
+              <span>Fade</span>
+              <span>Taper</span>
+              <span>Sakal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-card" data-aos="fade-up" data-delay="150">
+          <div class="team-photo">
+            <div class="team-avatar">
+              <svg viewBox="0 0 120 160" fill="none"><circle cx="60" cy="55" r="30" fill="#2a2a2a" stroke="#C9A84C" stroke-width="1.5"/><path d="M20 140c0-22 18-40 40-40s40 18 40 40" fill="#1a1a1a" stroke="#C9A84C" stroke-width="1.5"/><path d="M38 48 Q60 36 82 48" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="52" cy="60" r="3" fill="#C9A84C"/><circle cx="68" cy="60" r="3" fill="#C9A84C"/><path d="M52 73 Q60 80 68 73" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M48 75 Q60 90 72 75" stroke="#C9A84C" stroke-width="1" fill="none" opacity="0.5"/></svg>
+            </div>
+            <div class="team-social">
+              <span>@kingbarber_mert</span>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>Mert Kaya</h3>
+            <span class="team-role">Stil Uzmanı</span>
+            <p>Trendy kesimler ve yaratıcı tasarımlarda uzmanlaşmış genç usta.</p>
+            <div class="team-skills">
+              <span>Pompadour</span>
+              <span>Undercut</span>
+              <span>Renk</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-card" data-aos="fade-up" data-delay="300">
+          <div class="team-photo">
+            <div class="team-avatar">
+              <svg viewBox="0 0 120 160" fill="none"><circle cx="60" cy="55" r="30" fill="#2a2a2a" stroke="#C9A84C" stroke-width="1.5"/><path d="M20 140c0-22 18-40 40-40s40 18 40 40" fill="#1a1a1a" stroke="#C9A84C" stroke-width="1.5"/><circle cx="52" cy="60" r="3" fill="#C9A84C"/><circle cx="68" cy="60" r="3" fill="#C9A84C"/><path d="M50 73 Q60 79 70 73" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M44 50 Q60 44 76 50" stroke="#C9A84C" stroke-width="1.5" fill="none"/><rect x="50" y="76" width="20" height="4" rx="2" fill="#C9A84C" opacity="0.4"/></svg>
+            </div>
+            <div class="team-social">
+              <span>@kingbarber_emre</span>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>Emre Demir</h3>
+            <span class="team-role">Sakal & Ustura Ustası</span>
+            <p>Geleneksel ustura tıraşı ve sakal bakımında döneminin en iyisi.</p>
+            <div class="team-skills">
+              <span>Hot Towel</span>
+              <span>Ustura</span>
+              <span>Bakım</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Yorumlar</span>
+        <h2 class="section-title">Müşterilerimiz<br /><em>Ne Diyor?</em></h2>
+      </div>
+      <div class="testimonials-track" id="testimonialsTrack">
+        <div class="testimonial-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Hayatımda gittiğim en iyi berber. Ahmet usta saçımı tam istediğim gibi kesti, hatta daha iyisini yaptı. Kesinlikle tavsiye ederim!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">AK</div>
+            <div>
+              <span class="testi-name">Ali Korkmaz</span>
+              <span class="testi-date">2 hafta önce</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"VIP paketi aldım, tam 90 dakika boyunca kendimi kral gibi hissettim. Kafa masajı, sıcak havlu tıraş, her şey müthişti."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">ME</div>
+            <div>
+              <span class="testi-name">Mehmet Erdoğan</span>
+              <span class="testi-date">1 ay önce</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Online randevu sistemi çok pratik. Bekleme yok, direkt koltuğa oturuyorsunuz. Temizlik ve hijyen de üst seviye."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">CB</div>
+            <div>
+              <span class="testi-name">Can Bulut</span>
+              <span class="testi-date">3 hafta önce</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Mert usta sakal tasarımı konusunda gerçekten yetenekli. Yüz hatlarıma göre en uygun şekli önerdi ve harika sonuç çıktı."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">BT</div>
+            <div>
+              <span class="testi-name">Barış Tekin</span>
+              <span class="testi-date">1 hafta önce</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testi-stars">★★★★★</div>
+          <p>"Şehrin en iyi berberi diyebilirim çekinmeden. Fiyat-performans dengesi mükemmel. Her ay düzenli geliyorum artık."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">YA</div>
+            <div>
+              <span class="testi-name">Yusuf Arslan</span>
+              <span class="testi-date">5 gün önce</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-controls">
+        <button class="testi-btn" id="testiPrev">←</button>
+        <div class="testi-dots" id="testiDots"></div>
+        <button class="testi-btn" id="testiNext">→</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Appointment Section -->
+  <section class="appointment" id="appointment">
+    <div class="appointment-bg"></div>
+    <div class="container">
+      <div class="appointment-grid">
+        <div class="appointment-info" data-aos="fade-right">
+          <span class="section-tag">Randevu</span>
+          <h2 class="section-title">Koltuğunu<br /><em>Şimdi Ayırt</em></h2>
+          <p>Online randevu sistemi ile bekleme kuyruğuna girmeyin. Saatinizi seçin, gelin, doğrudan yerinize oturun.</p>
+          <div class="appt-benefits">
+            <div class="appt-benefit">
+              <span class="benefit-icon">⚡</span>
+              <div>
+                <strong>Anında Onay</strong>
+                <p>Randevunuz anında onaylanır, SMS ile bildirilir.</p>
+              </div>
+            </div>
+            <div class="appt-benefit">
+              <span class="benefit-icon">🔄</span>
+              <div>
+                <strong>Ücretsiz İptal</strong>
+                <p>24 saat öncesine kadar ücretsiz iptal veya değişiklik.</p>
+              </div>
+            </div>
+            <div class="appt-benefit">
+              <span class="benefit-icon">👑</span>
+              <div>
+                <strong>Usta Seçimi</strong>
+                <p>Favori berberinizi seçme imkânı.</p>
+              </div>
+            </div>
+          </div>
+          <div class="working-hours">
+            <h4>Çalışma Saatleri</h4>
+            <div class="hours-grid">
+              <span>Pazartesi – Cumartesi</span><span class="hours-time">09:00 – 20:00</span>
+              <span>Pazar</span><span class="hours-time">10:00 – 18:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="appointment-form-wrap" data-aos="fade-left">
+          <form class="appointment-form" id="appointmentForm">
+            <h3 class="form-title">Randevu Formu</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Ad Soyad</label>
+                <input type="text" placeholder="Adınız Soyadınız" required />
+              </div>
+              <div class="form-group">
+                <label>Telefon</label>
+                <input type="tel" placeholder="05XX XXX XX XX" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Hizmet Seçin</label>
+              <select required>
+                <option value="" disabled selected>Hizmet seçiniz...</option>
+                <option value="klasik">Klasik Saç Kesimi — ₺250</option>
+                <option value="paket">Saç + Sakal Paketi — ₺450</option>
+                <option value="sakal">Sakal Tasarım — ₺200</option>
+                <option value="tiras">Kral Tıraşı — ₺300</option>
+                <option value="vip">VIP Bakım Paketi — ₺750</option>
+                <option value="ogrenci">Öğrenci Kesimi — ₺150</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Berber Seçin</label>
+              <div class="barber-selector">
+                <label class="barber-option">
+                  <input type="radio" name="barber" value="ahmet" />
+                  <span class="barber-pill">Ahmet Usta</span>
+                </label>
+                <label class="barber-option">
+                  <input type="radio" name="barber" value="mert" />
+                  <span class="barber-pill">Mert Usta</span>
+                </label>
+                <label class="barber-option">
+                  <input type="radio" name="barber" value="emre" />
+                  <span class="barber-pill">Emre Usta</span>
+                </label>
+                <label class="barber-option">
+                  <input type="radio" name="barber" value="any" checked />
+                  <span class="barber-pill">Fark Etmez</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tarih</label>
+                <input type="date" id="appointmentDate" required />
+              </div>
+              <div class="form-group">
+                <label>Saat</label>
+                <div class="time-slots" id="timeSlots">
+                  <button type="button" class="time-slot" data-time="09:00">09:00</button>
+                  <button type="button" class="time-slot" data-time="09:30">09:30</button>
+                  <button type="button" class="time-slot" data-time="10:00">10:00</button>
+                  <button type="button" class="time-slot" data-time="10:30">10:30</button>
+                  <button type="button" class="time-slot" data-time="11:00">11:00</button>
+                  <button type="button" class="time-slot" data-time="11:30">11:30</button>
+                  <button type="button" class="time-slot busy" data-time="12:00">12:00</button>
+                  <button type="button" class="time-slot busy" data-time="12:30">12:30</button>
+                  <button type="button" class="time-slot" data-time="13:00">13:00</button>
+                  <button type="button" class="time-slot" data-time="13:30">13:30</button>
+                  <button type="button" class="time-slot" data-time="14:00">14:00</button>
+                  <button type="button" class="time-slot busy" data-time="14:30">14:30</button>
+                  <button type="button" class="time-slot" data-time="15:00">15:00</button>
+                  <button type="button" class="time-slot" data-time="15:30">15:30</button>
+                  <button type="button" class="time-slot" data-time="16:00">16:00</button>
+                  <button type="button" class="time-slot" data-time="16:30">16:30</button>
+                  <button type="button" class="time-slot busy" data-time="17:00">17:00</button>
+                  <button type="button" class="time-slot" data-time="17:30">17:30</button>
+                  <button type="button" class="time-slot" data-time="18:00">18:00</button>
+                  <button type="button" class="time-slot" data-time="18:30">18:30</button>
+                </div>
+                <input type="hidden" id="selectedTime" name="time" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Notlar (İsteğe bağlı)</label>
+              <textarea placeholder="Özel isteklerinizi, referans fotoğraf linkini veya notlarınızı yazın..." rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">
+              <span class="btn-text">Randevu Onayla</span>
+              <span class="btn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">İletişim</span>
+        <h2 class="section-title">Bize<br /><em>Ulaşın</em></h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <h4>Adres</h4>
+          <p>Bağcılar Mahallesi, Atatürk Caddesi No:42<br />Kadıköy, İstanbul</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <h4>Telefon</h4>
+          <p><a href="tel:+905001234567">+90 500 123 45 67</a></p>
+          <p><a href="tel:+902161234567">+90 216 123 45 67</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <h4>E-posta</h4>
+          <p><a href="mailto:info@kingbarber.com">info@kingbarber.com</a></p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📱</div>
+          <h4>Sosyal Medya</h4>
+          <div class="social-links">
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">Facebook</a>
+            <a href="#" class="social-link">TikTok</a>
+          </div>
+        </div>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-inner">
+          <div class="map-pin">📍</div>
+          <p>King Barber</p>
+          <span>Kadıköy, İstanbul</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-king">KING</span>
+            <span class="logo-barber">BARBER</span>
+          </div>
+          <p>İstanbul'un en prestijli erkek bakım merkezi. Her kesimde mükemmeliyeti arıyoruz.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h5>Hızlı Linkler</h5>
+          <ul>
+            <li><a href="#services">Hizmetler</a></li>
+            <li><a href="#about">Hakkımızda</a></li>
+            <li><a href="#gallery">Galeri</a></li>
+            <li><a href="#team">Ekip</a></li>
+            <li><a href="#appointment">Randevu Al</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Hizmetler</h5>
+          <ul>
+            <li><a href="#appointment">Klasik Saç Kesimi</a></li>
+            <li><a href="#appointment">Saç + Sakal Paketi</a></li>
+            <li><a href="#appointment">Kral Tıraşı</a></li>
+            <li><a href="#appointment">VIP Paket</a></li>
+            <li><a href="#appointment">Öğrenci Kesimi</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h5>İletişim</h5>
+          <p>📍 Kadıköy, İstanbul</p>
+          <p>📞 +90 500 123 45 67</p>
+          <p>✉️ info@kingbarber.com</p>
+          <p>🕐 Pzt-Cts: 09:00-20:00</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 King Barber. Tüm hakları saklıdır.</p>
+        <p>Tasarım ile <span class="heart">❤</span> yapılmıştır.</p>
+        <a href="admin-login.html" class="admin-login-link" title="Yönetici Girişi">
+          <svg viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Yönetici
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+      <div class="modal-icon">👑</div>
+      <h3>Randevunuz Alındı!</h3>
+      <p>Randevu detayları telefonunuza SMS olarak gönderilecektir. Sizi bekliyoruz!</p>
+      <button class="btn-primary" id="closeModal">
+        <span>Harika!</span>
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
