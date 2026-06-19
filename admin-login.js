@@ -2,9 +2,10 @@
 // admin-login.js — Hardcoded giriş sistemi
 // ============================================
 
-import { ADMIN_USER, ADMIN_PASSWORD } from "./firebase-config.js";
+import { USERS } from "./firebase-config.js";
 
 const SESSION_KEY = "kb_admin_session";
+const USER_KEY    = "kb_admin_user";
 
 // Zaten giriş yapılmışsa direkt yönlendir
 if (sessionStorage.getItem(SESSION_KEY) === "authenticated") {
@@ -37,8 +38,10 @@ form.addEventListener('submit', e => {
 
   // Kısa gecikme — daha gerçekçi hissettirir
   setTimeout(() => {
-    if (user === ADMIN_USER && password === ADMIN_PASSWORD) {
+    const account = USERS[user];
+    if (account && account.password === password) {
       sessionStorage.setItem(SESSION_KEY, "authenticated");
+      sessionStorage.setItem(USER_KEY, account.displayName);
       window.location.href = "admin.html";
     } else {
       setLoading(false);

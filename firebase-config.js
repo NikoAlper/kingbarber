@@ -21,7 +21,10 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 
-// ── Admin giriş bilgileri ──────────────────────
-// Değiştirmek için sadece bu iki satırı güncelleyin
-export const ADMIN_USER     = "admin";
-export const ADMIN_PASSWORD = "123123";
+// ── Berber giriş bilgileri ──────────────────────
+export const USERS = {
+  "fatihtuncer":      { password: "123123",          displayName: "Fatih Tuncer" },
+  "şemsettinsancak":  { password: "123123123",       displayName: "Şemsettin Sancak" },
+  "furkanormankaya":  { password: "123123123123",    displayName: "Furkan Ormankaya" },
+  "beratözbakır":     { password: "123123123123123", displayName: "Berat Özbakır" },
+};

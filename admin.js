@@ -14,6 +14,7 @@ import {
 
 // ── Auth guard: session yoksa login'e yönlendir ──
 const SESSION_KEY = "kb_admin_session";
+const USER_KEY    = "kb_admin_user";
 
 if (sessionStorage.getItem(SESSION_KEY) !== "authenticated") {
   window.location.href = "admin-login.html";
@@ -33,10 +34,11 @@ function initAdmin() {
 
 // ── Kullanıcı bilgisi ──
 function setupUserInfo() {
-  const emailEl  = document.getElementById('userEmail');
-  const avatarEl = document.getElementById('userAvatar');
-  if (emailEl)  emailEl.textContent  = 'Yönetici';
-  if (avatarEl) avatarEl.textContent = 'K';
+  const displayName = sessionStorage.getItem(USER_KEY) || 'Yönetici';
+  const emailEl     = document.getElementById('userEmail');
+  const avatarEl    = document.getElementById('userAvatar');
+  if (emailEl)  emailEl.textContent  = displayName;
+  if (avatarEl) avatarEl.textContent = displayName.charAt(0).toUpperCase();
 }
 
 // ── Navigasyon ──
@@ -66,6 +68,7 @@ function setupNavigation() {
 function setupLogout() {
   const doLogout = () => {
     sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(USER_KEY);
     window.location.href = "admin-login.html";
   };
   document.getElementById('logoutBtn')?.addEventListener('click', doLogout);

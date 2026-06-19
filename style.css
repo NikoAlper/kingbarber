@@ -1049,10 +1049,9 @@ section { padding: 120px 0; }
 }
 .hours-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 0;
-  font-size: 0.88rem;
-  color: var(--gray-light);
+  grid-template-columns: 1fr auto;
+  row-gap: 14px;
+  column-gap: 40px;
 }
 .hours-time { color: var(--white); font-weight: 500; }
 
