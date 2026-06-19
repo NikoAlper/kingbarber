@@ -24,4 +24,4 @@ export const db = getFirestore(app);
 // ── Admin giriş bilgileri ──────────────────────
 // Değiştirmek için sadece bu iki satırı güncelleyin
 export const ADMIN_USER     = "admin";
-export const ADMIN_PASSWORD = "kingbarber2024";
+export const ADMIN_PASSWORD = "123123";

@@ -3,12 +3,99 @@
 // ES Module — Firebase Firestore entegrasyonu
 // ============================================
 
+import Lenis from "https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.mjs";
 import { db } from "./firebase-config.js";
 import {
   collection,
   addDoc,
+  getDocs,
+  query,
+  where,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ── Firestore: dolu saatleri güncelle (berber bazlı) ──
+const TOTAL_BARBERS = 4;
+
+async function updateBusySlots(dateStr, selectedBarber = 'any') {
+  const slotsContainer    = document.getElementById('timeSlots');
+  const selectedTimeInput = document.getElementById('selectedTime');
+  if (!slotsContainer) return;
+
+  // Tüm slot'ları sıfırla
+  slotsContainer.querySelectorAll('.time-slot').forEach(slot => {
+    slot.classList.remove('busy', 'selected');
+    slot.disabled = false;
+  });
+  if (selectedTimeInput) selectedTimeInput.value = '';
+  if (!dateStr) return;
+
+  slotsContainer.style.opacity       = '0.45';
+  slotsContainer.style.pointerEvents = 'none';
+
+  try {
+    const q        = query(collection(db, 'appointments'), where('date', '==', dateStr));
+    const snapshot = await getDocs(q);
+
+    // İptal edilmişleri çıkar, saate göre grupla: { "11:30": ["ahmet", "any"], ... }
+    const byTime = {};
+    snapshot.docs.forEach(d => {
+      const data = d.data();
+      if (data.status === 'rejected') return;
+      if (!byTime[data.time]) byTime[data.time] = [];
+      byTime[data.time].push(data.barber);
+    });
+
+    const busyTimes = new Set();
+
+    Object.entries(byTime).forEach(([time, barbers]) => {
+      if (selectedBarber === 'any') {
+        // "Fark Etmez" seçiliyse: toplam randevu sayısı usta sayısına ulaştıysa dolu
+        if (barbers.length >= TOTAL_BARBERS) busyTimes.add(time);
+      } else {
+        // Belirli usta seçiliyse: sadece o ustanın randevusu varsa dolu
+        if (barbers.includes(selectedBarber)) busyTimes.add(time);
+      }
+    });
+
+    slotsContainer.querySelectorAll('.time-slot').forEach(slot => {
+      if (busyTimes.has(slot.dataset.time)) {
+        slot.classList.add('busy');
+        slot.disabled = true;
+      }
+    });
+  } catch (err) {
+    console.error('Müsaitlik sorgulanamadı:', err);
+  } finally {
+    slotsContainer.style.opacity       = '';
+    slotsContainer.style.pointerEvents = '';
+  }
+}
+
+// ── Smooth Scroll (Lenis) ──────────────────────
+const lenis = new Lenis({
+  duration:  1.4,
+  easing:    t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  touchMultiplier: 1.8,
+  infinite:  false,
+});
+
+function rafLoop(time) {
+  lenis.raf(time);
+  requestAnimationFrame(rafLoop);
+}
+requestAnimationFrame(rafLoop);
+
+// Lenis ile anchor scroll uyumu — native scroll yerine lenis kullanır
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', e => {
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: 0, duration: 1.4 });
+    }
+  });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -68,16 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ── Smooth scroll ──
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', e => {
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
+  // Anchor scroll — Lenis modül seviyesinde hallediliyor
 
   // ── Hero Particles ──
   const particlesContainer = document.getElementById('particles');
@@ -126,32 +204,50 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-aos]').forEach(el => aosObserver.observe(el));
 
   // ── Testimonials Slider ──
-  const track        = document.getElementById('testimonialsTrack');
+  const track         = document.getElementById('testimonialsTrack');
   const dotsContainer = document.getElementById('testiDots');
-  const prevBtn      = document.getElementById('testiPrev');
-  const nextBtn      = document.getElementById('testiNext');
+  const prevBtn       = document.getElementById('testiPrev');
+  const nextBtn       = document.getElementById('testiNext');
 
   if (track) {
-    const cards    = track.querySelectorAll('.testimonial-card');
-    let current    = 0;
-    let perView    = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
-    const maxIndex = Math.max(0, cards.length - perView);
+    const clip  = track.parentElement; // .testimonials-clip
+    const cards = track.querySelectorAll('.testimonial-card');
+    let current = 0;
+    let perView, cardW, maxIndex;
 
-    cards.forEach((_, i) => {
-      if (i <= maxIndex) {
+    // Kart genişliğini clip wrapper'dan piksel olarak hesapla
+    function calcSizes() {
+      perView  = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+      cardW    = (clip.offsetWidth - (24 * (perView - 1))) / perView;
+      maxIndex = Math.max(0, cards.length - perView);
+
+      // Her karta kesin genişlik ata — overflow'u engeller
+      cards.forEach(c => {
+        c.style.minWidth = cardW + 'px';
+        c.style.width    = cardW + 'px';
+      });
+    }
+
+    // Dot'ları oluştur
+    function buildDots() {
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i <= maxIndex; i++) {
         const dot = document.createElement('button');
         dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
         dot.addEventListener('click', () => goTo(i));
         dotsContainer.appendChild(dot);
       }
-    });
+    }
 
     function goTo(index) {
       current = Math.max(0, Math.min(index, maxIndex));
-      const cardWidth = cards[0].offsetWidth + 24;
-      track.style.transform = `translateX(-${current * cardWidth}px)`;
+      track.style.transform = `translateX(-${current * (cardW + 24)}px)`;
       dotsContainer.querySelectorAll('.testi-dot').forEach((d, i) => d.classList.toggle('active', i === current));
     }
+
+    // İlk kurulum
+    calcSizes();
+    buildDots();
 
     prevBtn.addEventListener('click', () => goTo(current - 1));
     nextBtn.addEventListener('click', () => goTo(current + 1));
@@ -161,29 +257,52 @@ document.addEventListener('DOMContentLoaded', () => {
     track.addEventListener('mouseleave', () => {
       autoSlide = setInterval(() => goTo(current < maxIndex ? current + 1 : 0), 4500);
     });
+
+    // Ekran boyutu değişince yeniden hesapla
     window.addEventListener('resize', () => {
-      perView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+      calcSizes();
+      buildDots();
       goTo(0);
     });
   }
 
-  // ── Time Slots ──
-  const timeSlots       = document.querySelectorAll('.time-slot:not(.busy)');
+  // ── Time Slots — tıklama dinleyicisi (event delegation) ──
+  const slotsContainer    = document.getElementById('timeSlots');
   const selectedTimeInput = document.getElementById('selectedTime');
-  timeSlots.forEach(slot => {
-    slot.addEventListener('click', () => {
-      timeSlots.forEach(s => s.classList.remove('selected'));
-      slot.classList.add('selected');
-      if (selectedTimeInput) selectedTimeInput.value = slot.dataset.time;
-    });
+
+  slotsContainer?.addEventListener('click', e => {
+    const slot = e.target.closest('.time-slot');
+    if (!slot || slot.classList.contains('busy')) return;
+    slotsContainer.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+    slot.classList.add('selected');
+    if (selectedTimeInput) selectedTimeInput.value = slot.dataset.time;
   });
 
-  // ── Min date ──
+  // ── Min date & tarih/berber değişimi ──
   const dateInput = document.getElementById('appointmentDate');
   if (dateInput) {
     const today = new Date();
     dateInput.min = today.toISOString().split('T')[0];
   }
+
+  // Seçili berberi oku
+  function getSelectedBarber() {
+    return document.querySelector('input[name="barber"]:checked')?.value || 'any';
+  }
+
+  // Tarih veya berber değişince slot'ları güncelle
+  function refreshSlots() {
+    const date   = dateInput?.value;
+    const barber = getSelectedBarber();
+    if (date) updateBusySlots(date, barber);
+  }
+
+  dateInput?.addEventListener('change', refreshSlots);
+
+  // Berber radio butonları değişince de güncelle
+  document.querySelectorAll('input[name="barber"]').forEach(radio => {
+    radio.addEventListener('change', refreshSlots);
+  });
 
   // ── Appointment Form — Firebase Firestore kayıt ──
   const form       = document.getElementById('appointmentForm');
@@ -217,6 +336,31 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
+        // Son kontrol: o saat hâlâ bu berber için boş mu?
+        const checkQ    = query(
+          collection(db, 'appointments'),
+          where('date', '==', formData.date),
+          where('time', '==', formData.time)
+        );
+        const checkSnap = await getDocs(checkQ);
+        const existing  = checkSnap.docs
+          .map(d => d.data())
+          .filter(d => d.status !== 'rejected');
+
+        let conflict = false;
+        if (formData.barber === 'any') {
+          conflict = existing.length >= TOTAL_BARBERS;
+        } else {
+          conflict = existing.some(d => d.barber === formData.barber);
+        }
+
+        if (conflict) {
+          setSubmitting(btn, false);
+          showFormError('Bu saat az önce doldu. Lütfen başka bir saat seçin.');
+          await updateBusySlots(formData.date, formData.barber);
+          return;
+        }
+
         await addDoc(collection(db, 'appointments'), formData);
 
         // Başarılı

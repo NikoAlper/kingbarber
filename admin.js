@@ -440,21 +440,21 @@ function statusBadge(status) {
 function serviceLabel(val) {
   const map = {
     klasik:  'Klasik Saç Kesimi',
-    paket:   'Saç + Sakal Paketi',
-    sakal:   'Sakal Tasarım',
-    tiras:   'Kral Tıraşı',
+    sacsakal:   'Saç + Sakal Paketi',
     vip:     'VIP Bakım Paketi',
-    ogrenci: 'Öğrenci Kesimi',
+    cocuk: 'Çocuk Kesimi',
+    cilt: 'Cilt Bakımı',
+    damat: 'Damat Paketi',
   };
   return map[val] || val || '—';
 }
 
 function barberLabel(val) {
   const map = {
-    ahmet: 'Ahmet Usta',
-    mert:  'Mert Usta',
-    emre:  'Emre Usta',
-    any:   'Fark Etmez',
+    fatihtuncer: 'Fatih Tuncer',
+    usta1: 'Şemsettin Sancak',
+    usta2: 'Furkan Ormankaya',
+    usta3: 'Berat Özbakır',
   };
   return map[val] || val || '—';
 }
