@@ -278,12 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectedTimeInput) selectedTimeInput.value = slot.dataset.time;
   });
 
-  // ── Min date & tarih/berber değişimi ──
+  // ── Custom Datepicker ──
   const dateInput = document.getElementById('appointmentDate');
-  if (dateInput) {
-    const today = new Date();
-    dateInput.min = today.toISOString().split('T')[0];
-  }
+  initDatepicker(dateInput);
 
   // Seçili berberi oku
   function getSelectedBarber() {
@@ -328,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         phone:     form.querySelector('input[type="tel"]').value.trim(),
         service:   form.querySelector('select').value,
         barber:    form.querySelector('input[name="barber"]:checked')?.value || 'any',
-        date:      form.querySelector('input[type="date"]').value,
+        date:      document.getElementById('appointmentDate').value,
         time:      selectedSlot.dataset.time,
         notes:     form.querySelector('textarea').value.trim(),
         status:    'pending',       // pending | approved | rejected | completed
@@ -449,3 +446,118 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+// ── Custom Datepicker ──────────────────────────────
+function initDatepicker(hiddenInput) {
+  if (!hiddenInput) return;
+
+  const TR_MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+
+  const display  = document.getElementById('datepickerDisplay');
+  const dropdown = document.getElementById('datepickerDropdown');
+  const titleEl  = document.getElementById('dpTitle');
+  const grid     = document.getElementById('dpGrid');
+  const prevBtn  = document.getElementById('dpPrev');
+  const nextBtn  = document.getElementById('dpNext');
+  const todayBtn = document.getElementById('dpToday');
+  if (!display || !dropdown) return;
+
+  const now      = new Date();
+  const todayStr = toYMD(now);
+  let viewYear   = now.getFullYear();
+  let viewMonth  = now.getMonth();
+  let selected   = null;
+
+  function toYMD(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function renderGrid() {
+    titleEl.textContent = `${TR_MONTHS[viewMonth]} ${viewYear}`;
+    grid.innerHTML = '';
+
+    const first     = new Date(viewYear, viewMonth, 1);
+    // Pazartesi bazlı (0=Pt … 6=Pa)
+    let startOffset = (first.getDay() + 6) % 7;
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const prevDays    = new Date(viewYear, viewMonth, 0).getDate();
+
+    // Önceki ay dolgu
+    for (let i = startOffset - 1; i >= 0; i--) {
+      const d = document.createElement('div');
+      d.className = 'dp-day dp-other';
+      d.textContent = prevDays - i;
+      grid.appendChild(d);
+    }
+
+    // Bu ayın günleri
+    for (let day = 1; day <= daysInMonth; day++) {
+      const d    = document.createElement('div');
+      const ymd  = `${viewYear}-${String(viewMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      const past = ymd < todayStr;
+      d.className = 'dp-day' + (past ? ' dp-disabled' : '') + (ymd === todayStr ? ' dp-today' : '') + (ymd === selected ? ' dp-selected' : '');
+      d.textContent = day;
+      if (!past) {
+        d.addEventListener('click', () => selectDate(ymd));
+      }
+      grid.appendChild(d);
+    }
+
+    // Sonraki ay dolgu
+    const filled = startOffset + daysInMonth;
+    const remain = filled % 7 === 0 ? 0 : 7 - (filled % 7);
+    for (let i = 1; i <= remain; i++) {
+      const d = document.createElement('div');
+      d.className = 'dp-day dp-other';
+      d.textContent = i;
+      grid.appendChild(d);
+    }
+  }
+
+  function selectDate(ymd) {
+    selected = ymd;
+    hiddenInput.value = ymd;
+    hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+    const [y, m, day] = ymd.split('-');
+    const dateObj = new Date(+y, +m - 1, +day);
+    document.getElementById('datepickerText').textContent =
+      `${String(+day).padStart(2,'0')} ${TR_MONTHS[+m-1]} ${y}`;
+    display.classList.add('has-value');
+    close();
+    renderGrid();
+  }
+
+  function open() {
+    renderGrid();
+    dropdown.classList.add('open');
+    display.classList.add('open');
+  }
+
+  function close() {
+    dropdown.classList.remove('open');
+    display.classList.remove('open');
+  }
+
+  display.addEventListener('click', () => {
+    dropdown.classList.contains('open') ? close() : open();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderGrid();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderGrid();
+  });
+
+  todayBtn.addEventListener('click', () => selectDate(todayStr));
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('customDatepicker')?.contains(e.target)) close();
+  });
+}

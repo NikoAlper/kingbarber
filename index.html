@@ -171,12 +171,12 @@
         </div> -->
       </div>
     </div>
-    <div class="hero-scroll">
+    <!-- <div class="hero-scroll">
       <div class="scroll-indicator">
-        <span>SCROLL</span>
+        <span>Aşağı Kaydır</span>
         <div class="scroll-line"></div>
       </div>
-    </div>
+    </div> -->
   </section>
 
   <!-- Marquee Banner -->
@@ -776,7 +776,34 @@
             <div class="form-row">
               <div class="form-group">
                 <label>Tarih</label>
-                <input type="date" id="appointmentDate" required />
+                <div class="custom-datepicker" id="customDatepicker">
+                  <div class="datepicker-display" id="datepickerDisplay">
+                    <svg viewBox="0 0 20 20" fill="none">
+                      <rect x="2" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M2 8h16M6 2v4M14 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span id="datepickerText">Tarih seçiniz...</span>
+                  </div>
+                  <div class="datepicker-dropdown" id="datepickerDropdown">
+                    <div class="dp-header">
+                      <button type="button" class="dp-nav" id="dpPrev">
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M8 12V4M4 8l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <span class="dp-title" id="dpTitle"></span>
+                      <button type="button" class="dp-nav" id="dpNext">
+                        <svg viewBox="0 0 16 16" fill="none"><path d="M8 4v8M4 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                    </div>
+                    <div class="dp-weekdays">
+                      <span>Pt</span><span>Sa</span><span>Ça</span><span>Pe</span><span>Cu</span><span>Ct</span><span>Pa</span>
+                    </div>
+                    <div class="dp-grid" id="dpGrid"></div>
+                    <div class="dp-footer">
+                      <button type="button" class="dp-today-btn" id="dpToday">Bugün</button>
+                    </div>
+                  </div>
+                </div>
+                <input type="hidden" id="appointmentDate" />
               </div>
               <div class="form-group">
                 <label>Saat</label>
