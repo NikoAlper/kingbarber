@@ -224,18 +224,18 @@ function renderAppointmentsTable(filter = currentFilter) {
 
   tbody.innerHTML = data.map(a => `
     <tr onclick="openDetail('${a.id}')">
-      <td class="td-datetime">
+      <td class="td-datetime" data-label="Tarih & Saat">
         <div class="td-date">${formatDate(a.date)}</div>
         <div class="td-time">${a.time || '—'}</div>
       </td>
-      <td>
+      <td data-label="Müşteri">
         <div class="td-name">${escHtml(a.name)}</div>
         <div class="td-phone">${escHtml(a.phone)}</div>
       </td>
-      <td>${serviceLabel(a.service)}</td>
-      <td>${barberLabel(a.barber)}</td>
-      <td>${statusBadge(a.status)}</td>
-      <td>
+      <td data-label="Hizmet">${serviceLabel(a.service)}</td>
+      <td data-label="Berber">${barberLabel(a.barber)}</td>
+      <td data-label="Durum">${statusBadge(a.status)}</td>
+      <td data-label="İşlemler">
         <div class="action-btns" onclick="event.stopPropagation()">
           ${a.status === 'pending'  ? `<button class="action-btn approve"  onclick="updateStatus('${a.id}','approved')">Onayla</button>` : ''}
           ${a.status === 'approved' ? `<button class="action-btn complete" onclick="updateStatus('${a.id}','completed')">Tamamla</button>` : ''}

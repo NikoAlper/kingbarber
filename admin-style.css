@@ -217,6 +217,7 @@ a { text-decoration: none; color: inherit; }
   color: var(--white);
   min-height: 100vh;
   display: flex;
+  overflow-x: hidden;
 }
 
 /* ── Sidebar ── */
@@ -350,6 +351,7 @@ a { text-decoration: none; color: inherit; }
 .admin-main {
   margin-left: var(--sidebar-w);
   flex: 1;
+  min-width: 0;
   min-height: 100vh;
   background: var(--black);
 }
@@ -707,7 +709,49 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); }
 @media (max-width: 640px) {
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .page-header { flex-direction: column; }
-  .filters-bar { flex-direction: column; align-items: flex-start; }
+  .filters-bar { flex-direction: column; align-items: stretch; gap: 16px; }
+  .filter-group { width: 100%; }
+  .filter-select, .filter-date { width: 100%; box-sizing: border-box; }
+  .btn-outline-sm { width: 100%; }
+
+  /* Tabloyu mobilde kart düzenine çevir */
+  .table-wrap { overflow-x: visible; border: none; border-radius: 0; }
+  .appt-table { font-size: 0.85rem; }
+  .appt-table thead { display: none; }
+  .appt-table, .appt-table tbody, .appt-table tr, .appt-table td { display: block; width: 100%; }
+  .appt-table tr {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .appt-table tbody tr:hover { background: var(--dark2); }
+  .appt-table td {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+  .appt-table tr td:last-child { border-bottom: none; }
+  .appt-table td::before {
+    content: attr(data-label);
+    font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600; color: var(--gray);
+    text-align: left; flex-shrink: 0;
+  }
+  .appt-table .td-datetime,
+  .appt-table td:nth-of-type(2) { flex-direction: row; align-items: flex-start; }
+  .appt-table .td-datetime > div,
+  .appt-table td:nth-of-type(2) > div { text-align: right; }
+  .appt-table td[data-label="İşlemler"] { flex-direction: column; align-items: stretch; }
+  .appt-table td[data-label="İşlemler"]::before { text-align: left; margin-bottom: 8px; }
+  .appt-table .action-btns { justify-content: flex-start; flex-wrap: wrap; }
+  /* Boş / yükleniyor satırı normal blok kalsın */
+  .appt-table td.table-loading { display: block; text-align: center; }
+  .appt-table td.table-loading::before { content: none; }
+
   .modal-detail-grid { grid-template-columns: 1fr; }
   .modal-detail-item.full { grid-column: span 1; }
   .action-btns { flex-wrap: wrap; }
