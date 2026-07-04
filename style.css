@@ -1266,7 +1266,7 @@ section { padding: 120px 0; }
 }
 .barber-selector {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 .barber-option { display: flex; cursor: pointer; }
@@ -1294,7 +1294,7 @@ section { padding: 120px 0; }
 
 .time-slots {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   margin-top: 4px;
 }
@@ -1603,7 +1603,10 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); cur
   .testimonial-card { flex-shrink: 0; }
 
   .form-row { grid-template-columns: 1fr; }
-  .time-slots { grid-template-columns: repeat(3, 1fr); }
+  .time-slots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .barber-selector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .barber-pill { white-space: normal; font-size: 0.8rem; padding: 11px 6px; }
 
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
@@ -1616,6 +1619,6 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); cur
   .hero-stats { flex-direction: column; gap: 20px; }
   .stat-divider { display: none; }
   .section-title { font-size: 2rem; }
-  .time-slots { grid-template-columns: repeat(3, 1fr); }
+  .time-slots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .nav-logo .logo-king { font-size: 1.3rem; }
 }

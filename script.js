@@ -89,10 +89,15 @@ requestAnimationFrame(rafLoop);
 // Lenis ile anchor scroll uyumu — native scroll yerine lenis kullanır
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', e => {
-    const target = document.querySelector(anchor.getAttribute('href'));
+    const href = anchor.getAttribute('href');
+    // "Randevu Al" linkleri doğrudan formun üstüne gitsin (bölüm başına değil)
+    const target = href === '#appointment'
+      ? (document.querySelector('.appointment-form-wrap') || document.querySelector(href))
+      : document.querySelector(href);
     if (target) {
       e.preventDefault();
-      lenis.scrollTo(target, { offset: 0, duration: 1.4 });
+      const offset = target.classList.contains('appointment-form-wrap') ? -90 : 0;
+      lenis.scrollTo(target, { offset, duration: 1.4 });
     }
   });
 });
