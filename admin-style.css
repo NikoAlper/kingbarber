@@ -267,6 +267,16 @@ a { text-decoration: none; color: inherit; }
 .sidebar-link:hover { background: rgba(255,255,255,0.05); color: var(--white); }
 .sidebar-link.active { background: rgba(201,168,76,0.12); color: var(--gold); }
 .sidebar-link.active svg { color: var(--gold); }
+.sidebar-install {
+  width: 100%;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: rgba(201,168,76,0.08);
+  color: var(--gold);
+}
+.sidebar-install:hover { background: rgba(201,168,76,0.15); color: var(--gold); }
 .sidebar-badge {
   margin-left: auto;
   background: var(--orange);
@@ -667,6 +677,11 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); }
   border-top: 1px solid var(--border);
   display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;
 }
+.install-modal { max-width: 520px; }
+.install-guide p { margin: 0 0 16px; color: var(--white); }
+.install-guide ol { margin: 0; padding-left: 22px; color: var(--gray-light); }
+.install-guide li { margin: 10px 0; line-height: 1.55; }
+[hidden] { display: none !important; }
 
 /* ── Auth gate ── */
 .auth-loading {

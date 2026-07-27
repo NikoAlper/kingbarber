@@ -29,7 +29,83 @@ function initAdmin() {
   setupLogout();
   setupSidebarMobile();
   setupDashboardDate();
+  setupAppInstall();
   loadAllAppointments();
+}
+
+// PWA kurulumu (buton sadece yönetici panelinde görünür)
+function setupAppInstall() {
+  const installBtn = document.getElementById('installAppBtn');
+  const modal = document.getElementById('installModal');
+  const body = document.getElementById('installModalBody');
+  const actionBtn = document.getElementById('installModalAction');
+  let deferredPrompt = null;
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.error('Service worker kaydı başarısız:', err);
+    });
+  }
+
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+  const closeModal = () => modal?.classList.remove('active');
+
+  document.getElementById('installModalClose')?.addEventListener('click', closeModal);
+  document.getElementById('installModalCancel')?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    if (body) body.innerHTML = '<p>King Barber başarıyla cihazınıza yüklendi.</p>';
+    if (actionBtn) actionBtn.hidden = true;
+  });
+
+  installBtn?.addEventListener('click', () => {
+    if (!modal || !body || !actionBtn) return;
+    actionBtn.hidden = true;
+
+    if (isStandalone) {
+      body.innerHTML = '<p>King Barber bu cihazda zaten uygulama olarak çalışıyor.</p>';
+    } else if (isIos) {
+      body.innerHTML = `
+        <div class="install-guide">
+          <p>iPhone/iPad'de kurulum Safari üzerinden yapılır:</p>
+          <ol>
+            <li>Bu sayfayı <strong>Safari</strong> ile açın.</li>
+            <li>Alt menüdeki <strong>Paylaş</strong> simgesine dokunun.</li>
+            <li><strong>Ana Ekrana Ekle</strong> seçeneğini seçin.</li>
+            <li>Sağ üstteki <strong>Ekle</strong> düğmesine dokunun.</li>
+          </ol>
+        </div>`;
+    } else if (deferredPrompt) {
+      body.innerHTML = '<p>King Barber uygulamasını ana ekranınıza yükleyerek hızlıca açabilirsiniz.</p>';
+      actionBtn.hidden = false;
+    } else {
+      body.innerHTML = `
+        <p>Tarayıcınız otomatik kurulum penceresini göstermedi.</p>
+        <p>Tarayıcı menüsünden <strong>Uygulamayı yükle</strong> veya <strong>Ana ekrana ekle</strong> seçeneğini kullanın.</p>`;
+    }
+
+    modal.classList.add('active');
+  });
+
+  actionBtn?.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    actionBtn.hidden = true;
+    closeModal();
+  });
 }
 
 // ── Kullanıcı bilgisi ──

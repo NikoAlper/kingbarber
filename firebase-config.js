@@ -23,8 +23,8 @@ export const db = getFirestore(app);
 
 // ── Berber giriş bilgileri ──────────────────────
 export const USERS = {
-  "fatihtuncer":      { password: "fatihtuncer123123",          displayName: "Fatih Tuncer" },
-  "şemsettinsancak":  { password: "şemsettinsancak123123",       displayName: "Şemsettin Sancak" },
-  "furkanormankaya":  { password: "furkanormankaya123123",    displayName: "Furkan Ormankaya" },
-  "beratözbakır":     { password: "beratözbakır123123", displayName: "Berat Özbakır" },
+  "fatihtuncer":      { password: "Buglemsu.2015",          displayName: "Fatih Tuncer" },
+  "semsettinsancak":  { password: "Semsettin.1905",       displayName: "Şemsettin Sancak" },
+  "furkanormankaya":  { password: "Furkan.1907",    displayName: "Furkan Ormankaya" },
+  "beratozbakir":     { password: "Berat3131", displayName: "Berat Özbakır" },
 };
