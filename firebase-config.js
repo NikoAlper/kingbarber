@@ -26,5 +26,5 @@ export const USERS = {
   "fatihtuncer":      { password: "Buglemsu.2015",          displayName: "Fatih Tuncer" },
   "semsettinsancak":  { password: "Semsettin.1905",       displayName: "Şemsettin Sancak" },
   "furkanormankaya":  { password: "Furkan.1907",    displayName: "Furkan Ormankaya" },
-  "beratozbakir":     { password: "Berat3131", displayName: "Berat Özbakır" },
+  "beratozbakir":     { password: "Berat.3131", displayName: "Berat Özbakır" },
 };
