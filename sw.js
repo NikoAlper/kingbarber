@@ -1,13 +1,15 @@
-const CACHE_NAME = 'king-barber-v4';
+const CACHE_NAME = 'king-barber-v8';
 const APP_SHELL = [
   './',
   './index.html',
   './style.css',
   './script.js',
   './manifest.webmanifest',
-  './icons/icon.svg',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/logo-32.png',
+  './icons/logo-round-64.png',
+  './icons/logo-180.png',
+  './icons/logo-192.png',
+  './icons/logo-512.png'
 ];
 
 self.addEventListener('install', event => {

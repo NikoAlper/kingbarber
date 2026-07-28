@@ -437,7 +437,7 @@ window.sendAppointmentMessage = function(id) {
     '',
     'Belirtilen tarih ve saatte sizi salonumuzda bekliyoruz. Değişiklik olması durumunda lütfen bizimle iletişime geçin.',
     '',
-    'King Barber'
+    'King Barbers'
   ].join('\n');
 
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');

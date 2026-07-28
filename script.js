@@ -315,9 +315,17 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async e => {
       e.preventDefault();
 
+      const selectedDate = dateInput?.value.trim();
+      if (!selectedDate) {
+        highlightDateError();
+        showFormError('Lütfen randevu tarihini seçin.');
+        return;
+      }
+
       const selectedSlot = document.querySelector('.time-slot.selected');
       if (!selectedSlot) {
         highlightTimeError();
+        showFormError('Lütfen randevu saatini seçin.');
         return;
       }
 
@@ -330,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         phone:     form.querySelector('input[type="tel"]').value.trim(),
         service:   form.querySelector('select').value,
         barber:    form.querySelector('input[name="barber"]:checked')?.value || 'any',
-        date:      document.getElementById('appointmentDate').value,
+        date:      selectedDate,
         time:      selectedSlot.dataset.time,
         notes:     form.querySelector('textarea').value.trim(),
         status:    'pending',       // pending | approved | rejected | completed
@@ -389,6 +397,14 @@ document.addEventListener('DOMContentLoaded', () => {
     slotsContainer.style.borderRadius = '8px';
     slotsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
     setTimeout(() => { slotsContainer.style.outline = ''; }, 2200);
+  }
+
+  function highlightDateError() {
+    const dateDisplay = document.getElementById('datepickerDisplay');
+    if (!dateDisplay) return;
+    dateDisplay.style.outline = '2px solid rgba(255,80,80,0.75)';
+    dateDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => { dateDisplay.style.outline = ''; }, 2200);
   }
 
   function showFormError(msg) {
