@@ -575,7 +575,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); }
 .td-name { font-weight: 600; color: var(--white); }
 .td-phone { font-size: 0.78rem; color: var(--gray); margin-top: 2px; }
 
-.action-btns { display: flex; gap: 6px; flex-wrap: nowrap; }
+.action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
 .action-btn {
   padding: 5px 11px; border-radius: 5px;
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em;
@@ -586,6 +586,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); }
 .action-btn.approve  { background: rgba(91,155,213,0.15); color: var(--blue);   border-color: rgba(91,155,213,0.3); }
 .action-btn.complete { background: rgba(76,175,130,0.15); color: var(--green);  border-color: rgba(76,175,130,0.3); }
 .action-btn.reject   { background: rgba(224,85,85,0.1);  color: var(--red);    border-color: rgba(224,85,85,0.3); }
+.action-btn.message  { background: rgba(37,211,102,0.12); color: #5ee58d; border-color: rgba(37,211,102,0.35); }
 .action-btn.detail   { background: rgba(255,255,255,0.05); color: var(--gray-light); border-color: var(--border); }
 .action-btn:hover { filter: brightness(1.2); }
 

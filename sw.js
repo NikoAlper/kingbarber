@@ -1,4 +1,4 @@
-const CACHE_NAME = 'king-barber-v1';
+const CACHE_NAME = 'king-barber-v4';
 const APP_SHELL = [
   './',
   './index.html',

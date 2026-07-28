@@ -316,6 +316,7 @@ function renderAppointmentsTable(filter = currentFilter) {
           ${a.status === 'pending'  ? `<button class="action-btn approve"  onclick="updateStatus('${a.id}','approved')">Onayla</button>` : ''}
           ${a.status === 'approved' ? `<button class="action-btn complete" onclick="updateStatus('${a.id}','completed')">Tamamla</button>` : ''}
           ${a.status !== 'rejected' && a.status !== 'completed' ? `<button class="action-btn reject" onclick="updateStatus('${a.id}','rejected')">İptal</button>` : ''}
+          <button class="action-btn message" onclick="sendAppointmentMessage('${a.id}')">Mesaj Gönder</button>
           <button class="action-btn detail" onclick="openDetail('${a.id}')">Detay</button>
         </div>
       </td>
@@ -414,6 +415,42 @@ window.updateStatus = async function(id, newStatus) {
   }
 };
 
+// ── Müşteriye WhatsApp mesajı gönderme ──
+window.sendAppointmentMessage = function(id) {
+  const appointment = allAppointments.find(a => a.id === id);
+  if (!appointment) return;
+
+  const phone = normalizeWhatsAppPhone(appointment.phone);
+  if (!phone) {
+    alert('Müşterinin telefon numarası geçerli değil.');
+    return;
+  }
+
+  const message = [
+    `Merhaba ${appointment.name || 'değerli müşterimiz'},`,
+    '',
+    'King Barber randevunuz başarıyla oluşturulmuştur.',
+    `Tarih: ${formatDate(appointment.date)}`,
+    `Saat: ${appointment.time || '-'}`,
+    `Hizmet: ${serviceLabel(appointment.service)}`,
+    `Berber: ${barberLabel(appointment.barber)}`,
+    '',
+    'Belirtilen tarih ve saatte sizi salonumuzda bekliyoruz. Değişiklik olması durumunda lütfen bizimle iletişime geçin.',
+    '',
+    'King Barber'
+  ].join('\n');
+
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+};
+
+function normalizeWhatsAppPhone(value) {
+  let digits = String(value || '').replace(/\D/g, '');
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  if (digits.length === 11 && digits.startsWith('0')) digits = `90${digits.slice(1)}`;
+  else if (digits.length === 10 && digits.startsWith('5')) digits = `90${digits}`;
+  return digits.length >= 10 && digits.length <= 15 ? digits : '';
+}
+
 // ── Detail Modal ──
 window.openDetail = function(id) {
   const a = allAppointments.find(ap => ap.id === id);
@@ -470,6 +507,7 @@ window.openDetail = function(id) {
     ${a.status === 'approved' ? `<button class="action-btn complete" onclick="updateStatus('${a.id}','completed')">✓ Tamamlandı</button>` : ''}
     ${a.status !== 'rejected' && a.status !== 'completed'
       ? `<button class="action-btn reject" onclick="updateStatus('${a.id}','rejected')">✕ İptal Et</button>` : ''}
+    <button class="action-btn message" onclick="sendAppointmentMessage('${a.id}')">Mesaj Gönder</button>
     <button class="action-btn detail" onclick="closeModal()">Kapat</button>
   `;
 

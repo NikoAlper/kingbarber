@@ -741,7 +741,7 @@ section { padding: 120px 0; }
   background: var(--dark2);
   border-radius: 16px;
   border: 1px solid rgba(201,168,76,0.2);
-  aspect-ratio: 3/4;
+  aspect-ratio: 1/1;
   max-height: 520px;
   display: flex;
   align-items: center;
@@ -749,11 +749,19 @@ section { padding: 120px 0; }
   overflow: hidden;
   position: relative;
 }
+.about-main-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
 .about-img-placeholder::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0,0,0,0.12), transparent 30%);
 }
 .barber-illustration svg { width: 200px; height: auto; }
 .about-floating-card {
@@ -891,14 +899,41 @@ section { padding: 120px 0; }
 .team-photo {
   position: relative;
   background: linear-gradient(135deg, var(--dark3), #1e1c14);
-  padding: 48px 24px 24px;
+  height: 250px;
+  overflow: hidden;
   text-align: center;
 }
-.team-avatar svg { width: 120px; height: 160px; margin: 0 auto; }
+.team-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 32%;
+  transition: transform var(--transition);
+}
+.team-card:hover .team-image { transform: scale(1.04); }
+.team-image-fatih {
+  object-position: 66% 34%;
+  transform: scale(1.55);
+  transform-origin: 66% 34%;
+}
+.team-image-semsettin {
+  object-position: 32% 34%;
+  transform: scale(1.55);
+  transform-origin: 32% 34%;
+}
+.team-card:hover .team-image-fatih,
+.team-card:hover .team-image-semsettin { transform: scale(1.61); }
 .team-social {
-  margin-top: 12px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 22px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
   font-size: 0.75rem;
-  color: var(--gray);
+  color: rgba(255,255,255,0.75);
   letter-spacing: 0.05em;
 }
 .team-info { padding: 24px; }
