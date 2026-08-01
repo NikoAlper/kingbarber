@@ -2,13 +2,16 @@
 // admin.js — King Barber Admin Panel
 // ============================================
 
-import { db, app, auth } from "./firebase-config.js";
+import { db, app, auth, USERNAME_TO_BARBER } from "./firebase-config.js";
 import {
   collection,
   query,
+  where,
+  getDocs,
   onSnapshot,
   doc,
   setDoc,
+  deleteDoc,
   updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -26,12 +29,15 @@ const VAPID_KEY = "BIiw-2oMjZn79Xi3SJ0-ajdGZSCRYrma4FZnxOxlQ3wZC-55kzJRrEKPvAqCH
 
 // ── Auth guard: gerçek Firebase Authentication oturumu yoksa login'e yönlendir ──
 const USER_KEY = "kb_admin_user";
+let currentBarber = null; // giriş yapan berberin randevu formundaki ID'si (fatihtuncer/usta1/usta2/usta3)
 
 onAuthStateChanged(auth, user => {
   if (!user) {
     window.location.href = "admin-login.html";
     return;
   }
+  const username = (user.email || '').split('@')[0];
+  currentBarber = USERNAME_TO_BARBER[username] || null;
   initAdmin();
 });
 
@@ -45,6 +51,7 @@ function initAdmin() {
   setupAppInstall();
   loadAllAppointments();
   setupPushNotifications();
+  setupHoursSection();
 }
 
 // ── Push bildirimleri (yeni randevu geldiğinde) ──
@@ -282,6 +289,7 @@ function loadAllAppointments() {
     renderAppointmentsTable();
     renderTodayTimeline();
     updatePendingBadge();
+    refreshHoursIfVisible();
   }, err => {
     console.error('Firestore okuma hatası:', err);
     showDbError(err);
@@ -300,6 +308,109 @@ function showDbError(err) {
           </small>
         </td>
       </tr>`;
+  }
+}
+
+// ── Randevu saat ayarları (kendi saatini kapat/aç) ──
+function setupHoursSection() {
+  const dateInput = document.getElementById('hoursDate');
+  const container  = document.getElementById('hoursTimeSlots');
+  if (!dateInput || !container) return;
+
+  if (!currentBarber) {
+    container.innerHTML = '<div class="empty-state"><p>Bu hesap bir berbere bağlı değil.</p></div>';
+    dateInput.disabled = true;
+    return;
+  }
+
+  const todayStr = todayISOString();
+  dateInput.min   = todayStr;
+  dateInput.value = todayStr;
+
+  dateInput.addEventListener('change', () => renderHoursSlots(dateInput.value));
+  renderHoursSlots(dateInput.value);
+}
+
+function generateHourlyTimes() {
+  const times = [];
+  for (let h = 9; h <= 21; h++) {
+    times.push(`${String(h).padStart(2, '0')}:00`);
+    if (h < 21) times.push(`${String(h).padStart(2, '0')}:30`);
+  }
+  return times;
+}
+
+function refreshHoursIfVisible() {
+  const dateInput = document.getElementById('hoursDate');
+  if (dateInput && dateInput.value) renderHoursSlots(dateInput.value);
+}
+
+async function renderHoursSlots(dateStr) {
+  const container = document.getElementById('hoursTimeSlots');
+  if (!container || !dateStr || !currentBarber) return;
+
+  let blockedTimes;
+  try {
+    const blockedQ = query(
+      collection(db, 'blockedSlots'),
+      where('barber', '==', currentBarber),
+      where('date', '==', dateStr)
+    );
+    const blockedSnap = await getDocs(blockedQ);
+    blockedTimes = new Set(blockedSnap.docs.map(d => d.data().time));
+  } catch (err) {
+    console.error('Kapalı saatler okunamadı:', err);
+    container.innerHTML = '<div class="empty-state"><p>Saatler yüklenemedi.</p></div>';
+    return;
+  }
+
+  const bookedTimes = new Set(
+    allAppointments
+      .filter(a => a.barber === currentBarber && a.date === dateStr && a.status !== 'rejected')
+      .map(a => a.time)
+  );
+
+  container.innerHTML = '';
+  generateHourlyTimes().forEach(time => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'time-slot';
+    btn.textContent = time;
+
+    if (bookedTimes.has(time)) {
+      btn.classList.add('slot-booked');
+      btn.disabled = true;
+      btn.title = 'Bu saatte randevu var';
+    } else if (blockedTimes.has(time)) {
+      btn.classList.add('slot-blocked');
+      btn.title = 'Kapalı — açmak için tıklayın';
+      btn.addEventListener('click', () => toggleHourSlot(dateStr, time, true));
+    } else {
+      btn.title = 'Kapatmak için tıklayın';
+      btn.addEventListener('click', () => toggleHourSlot(dateStr, time, false));
+    }
+
+    container.appendChild(btn);
+  });
+}
+
+async function toggleHourSlot(dateStr, time, isBlocked) {
+  const slotId = `${currentBarber}_${dateStr}_${time}`;
+  try {
+    if (isBlocked) {
+      await deleteDoc(doc(db, 'blockedSlots', slotId));
+    } else {
+      await setDoc(doc(db, 'blockedSlots', slotId), {
+        barber: currentBarber,
+        date: dateStr,
+        time,
+        createdAt: serverTimestamp()
+      });
+    }
+    renderHoursSlots(dateStr);
+  } catch (err) {
+    console.error('Saat güncellenemedi:', err);
+    alert('Saat güncellenirken bir hata oluştu.');
   }
 }
 

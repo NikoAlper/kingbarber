@@ -279,6 +279,55 @@ a { text-decoration: none; color: inherit; }
 .sidebar-install:hover { background: rgba(201,168,76,0.15); color: var(--gold); }
 .sidebar-install.notify-on { background: rgba(76,201,110,0.1); color: #4dd979; }
 .sidebar-install.notify-on:hover { background: rgba(76,201,110,0.18); }
+
+/* ── Saat Ayarları ── */
+.hours-panel { max-width: 640px; }
+.hours-date-input {
+  background: var(--dark2);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font: inherit;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  color-scheme: dark;
+}
+.hours-date-input:focus { outline: none; border-color: var(--border-gold); }
+.hours-panel .time-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.hours-panel .time-slot {
+  background: var(--dark2);
+  border: 1px solid var(--border);
+  color: var(--gray-light);
+  font: inherit;
+  padding: 10px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.hours-panel .time-slot:hover { border-color: var(--border-gold); color: var(--gold); }
+.hours-panel .time-slot.slot-blocked {
+  background: rgba(224,85,85,0.12);
+  border-color: rgba(224,85,85,0.4);
+  color: var(--red);
+}
+.hours-panel .time-slot.slot-booked {
+  background: rgba(136,136,136,0.1);
+  border-color: var(--border);
+  color: var(--gray);
+  cursor: not-allowed;
+}
+.hours-legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.8rem; color: var(--gray); }
+.hours-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.hours-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.hours-dot.dot-open    { background: var(--dark4); border: 1px solid var(--border); }
+.hours-dot.dot-blocked { background: var(--red); }
+.hours-dot.dot-booked  { background: var(--gray); }
 .sidebar-badge {
   margin-left: auto;
   background: var(--orange);

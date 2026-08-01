@@ -14,6 +14,17 @@ service cloud.firestore {
       ];
     }
 
+    // Giriş yapan yöneticinin randevu formundaki berber ID'si — bir berberin
+    // sadece kendi saatlerini kapatabilmesi için kullanılıyor.
+    function ownBarber() {
+      return {
+        'FKSkj9YuQEaVfyuD82nerIN1YMl1': 'fatihtuncer',
+        'GTeu16aHQNfujiaOe3BS5ULhisJ2': 'usta1',
+        '1m78pABernS2ScF9VEvNhA3eHOm1': 'usta2',
+        'ep4UkVrep1epdWX0UmYEiUbyHhk1': 'usta3'
+      }[request.auth.uid];
+    }
+
     match /appointments/{id} {
       // Müşteri formu: herkes randevu oluşturabilir ama sadece geçerli, "pending"
       // durumda ve makul uzunlukta alanlarla.
@@ -40,6 +51,16 @@ service cloud.firestore {
     match /fcmTokens/{token} {
       allow read: if false;
       allow write: if isAdmin();
+    }
+
+    match /blockedSlots/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin()
+                    && request.resource.data.barber == ownBarber()
+                    && request.resource.data.date is string
+                    && request.resource.data.time is string;
+      allow delete: if isAdmin() && resource.data.barber == ownBarber();
+      allow update: if false;
     }
   }
 }

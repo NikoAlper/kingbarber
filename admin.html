@@ -37,6 +37,10 @@
         <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <span>Bugün</span>
       </a>
+      <a href="#" class="sidebar-link" data-section="hours">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 2v2M14 2v2M2 8h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 12l6-4M7 14l4-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Saat Ayarları</span>
+      </a>
       <button type="button" class="sidebar-link sidebar-install" id="installAppBtn">
         <svg viewBox="0 0 20 20" fill="none"><path d="M10 2v10m0 0l-4-4m4 4l4-4M3 14v2a2 2 0 002 2h10a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Uygulamayı İndir</span>
@@ -234,6 +238,30 @@
         <div class="empty-state">
           <span>☀️</span>
           <p>Bugün için randevu yükleniyor...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SAAT AYARLARI ── -->
+    <section class="admin-section" id="section-hours">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Randevu Saat Ayarları</h2>
+          <p class="page-subtitle">Müsait olmadığınız saatleri kapatın — müşteriler o saatlerde sizden randevu alamaz.</p>
+        </div>
+      </div>
+
+      <div class="hours-panel">
+        <input type="date" id="hoursDate" class="hours-date-input">
+
+        <div class="time-slots" id="hoursTimeSlots">
+          <div class="empty-state"><p>Bir tarih seçin.</p></div>
+        </div>
+
+        <div class="hours-legend">
+          <span><i class="hours-dot dot-open"></i> Açık</span>
+          <span><i class="hours-dot dot-blocked"></i> Kapattığınız saat</span>
+          <span><i class="hours-dot dot-booked"></i> Randevu var</span>
         </div>
       </div>
     </section>

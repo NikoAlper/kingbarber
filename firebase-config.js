@@ -38,3 +38,12 @@ export const DISPLAY_NAMES = {
   "furkanormankaya": "Furkan Ormankaya",
   "beratozbakir":    "Berat Özbakır",
 };
+
+// Randevu formundaki "barber" alanı, giriş kullanıcı adından farklı ID'ler kullanıyor
+// (index.html'deki radio value'ları ile eşleşir).
+export const USERNAME_TO_BARBER = {
+  "fatihtuncer":     "fatihtuncer",
+  "semsettinsancak": "usta1",
+  "furkanormankaya": "usta2",
+  "beratozbakir":    "usta3",
+};

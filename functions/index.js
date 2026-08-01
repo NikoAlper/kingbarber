@@ -21,12 +21,21 @@ exports.getBusySlots = onCall({ region: REGION }, async (request) => {
   }
 
   const db = getFirestore();
-  const snap = await db.collection("appointments").where("date", "==", date).get();
+  const [apptSnap, blockedSnap] = await Promise.all([
+    db.collection("appointments").where("date", "==", date).get(),
+    db.collection("blockedSlots").where("date", "==", date).get(),
+  ]);
 
   const byTime = {};
-  snap.forEach((doc) => {
+  apptSnap.forEach((doc) => {
     const data = doc.data();
     if (data.status === "rejected") return;
+    if (!byTime[data.time]) byTime[data.time] = [];
+    byTime[data.time].push(data.barber);
+  });
+  // Berberin kendi kapattığı saatler de "dolu" gibi davranır.
+  blockedSnap.forEach((doc) => {
+    const data = doc.data();
     if (!byTime[data.time]) byTime[data.time] = [];
     byTime[data.time].push(data.barber);
   });
