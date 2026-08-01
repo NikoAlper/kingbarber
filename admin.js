@@ -2,25 +2,38 @@
 // admin.js — King Barber Admin Panel
 // ============================================
 
-import { db } from "./firebase-config.js";
+import { db, app, auth } from "./firebase-config.js";
 import {
   collection,
   query,
   onSnapshot,
   doc,
+  setDoc,
   updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getMessaging,
+  getToken
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// ── Auth guard: session yoksa login'e yönlendir ──
-const SESSION_KEY = "kb_admin_session";
-const USER_KEY    = "kb_admin_user";
+// Firebase Console → Project Settings → Cloud Messaging → Web Push certificates'tan alınır
+const VAPID_KEY = "BIiw-2oMjZn79Xi3SJ0-ajdGZSCRYrma4FZnxOxlQ3wZC-55kzJRrEKPvAqCH2XwA4XxdPp2k7bFZRDYNaES4IE";
 
-if (sessionStorage.getItem(SESSION_KEY) !== "authenticated") {
-  window.location.href = "admin-login.html";
-}
+// ── Auth guard: gerçek Firebase Authentication oturumu yoksa login'e yönlendir ──
+const USER_KEY = "kb_admin_user";
 
-initAdmin();
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "admin-login.html";
+    return;
+  }
+  initAdmin();
+});
 
 // ── Uygulama başlangıcı ──
 function initAdmin() {
@@ -31,6 +44,38 @@ function initAdmin() {
   setupDashboardDate();
   setupAppInstall();
   loadAllAppointments();
+  setupPushNotifications();
+}
+
+// ── Push bildirimleri (yeni randevu geldiğinde) ──
+async function setupPushNotifications() {
+  if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
+  if (VAPID_KEY === "BURAYA_VAPID_KEY_YAPISTIR") {
+    console.warn('VAPID_KEY tanımlanmadı, push bildirimleri kurulmadı.');
+    return;
+  }
+
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return;
+
+    const registration = await navigator.serviceWorker.ready;
+    const messaging = getMessaging(app);
+    const fcmToken = await getToken(messaging, {
+      vapidKey: VAPID_KEY,
+      serviceWorkerRegistration: registration
+    });
+
+    if (fcmToken) {
+      await setDoc(doc(db, 'fcmTokens', fcmToken), {
+        user: sessionStorage.getItem(USER_KEY) || 'unknown',
+        userAgent: navigator.userAgent,
+        updatedAt: serverTimestamp()
+      });
+    }
+  } catch (err) {
+    console.error('Push bildirim kurulumu başarısız:', err);
+  }
 }
 
 // PWA kurulumu (buton sadece yönetici panelinde görünür)
@@ -143,9 +188,10 @@ function setupNavigation() {
 // ── Çıkış ──
 function setupLogout() {
   const doLogout = () => {
-    sessionStorage.removeItem(SESSION_KEY);
     sessionStorage.removeItem(USER_KEY);
-    window.location.href = "admin-login.html";
+    signOut(auth).finally(() => {
+      window.location.href = "admin-login.html";
+    });
   };
   document.getElementById('logoutBtn')?.addEventListener('click', doLogout);
   document.getElementById('mobileLogoutBtn')?.addEventListener('click', doLogout);

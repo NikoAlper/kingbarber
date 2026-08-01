@@ -6,6 +6,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyC8TsniuLodonZfiiSr1Bi0dEGKVZJmVWk",
@@ -17,14 +18,23 @@ const firebaseConfig = {
   measurementId:     "G-5JXS0TYHVT"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app  = initializeApp(firebaseConfig);
+export const db   = getFirestore(app);
+export const auth = getAuth(app);
 
-export const db = getFirestore(app);
+// ── Berber giriş eşlemesi ──────────────────────
+// Şifreler artık burada YOK — Firebase Authentication'da saklanıyor.
+// Kullanıcı adı, Auth'ta kayıtlı email'e eşleniyor.
+export const USERNAME_TO_EMAIL = {
+  "fatihtuncer":     "fatihtuncer@kingbarber.local",
+  "semsettinsancak": "semsettinsancak@kingbarber.local",
+  "furkanormankaya": "furkanormankaya@kingbarber.local",
+  "beratozbakir":    "beratozbakir@kingbarber.local",
+};
 
-// ── Berber giriş bilgileri ──────────────────────
-export const USERS = {
-  "fatihtuncer":      { password: "Buglemsu.2015",          displayName: "Fatih Tuncer" },
-  "semsettinsancak":  { password: "Semsettin.1905",       displayName: "Şemsettin Sancak" },
-  "furkanormankaya":  { password: "Furkan.1907",    displayName: "Furkan Ormankaya" },
-  "beratozbakir":     { password: "Berat.3131", displayName: "Berat Özbakır" },
+export const DISPLAY_NAMES = {
+  "fatihtuncer":     "Fatih Tuncer",
+  "semsettinsancak": "Şemsettin Sancak",
+  "furkanormankaya": "Furkan Ormankaya",
+  "beratozbakir":    "Berat Özbakır",
 };
