@@ -1,5 +1,6 @@
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { logger } = require("firebase-functions");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
@@ -46,6 +47,7 @@ exports.onNewAppointment = onDocumentCreated("appointments/{appointmentId}", asy
 
   const tokensSnap = await db.collection("fcmTokens").get();
   const tokens = tokensSnap.docs.map((d) => d.id);
+  logger.info(`onNewAppointment: ${tokens.length} kayıtlı token bulundu.`);
   if (!tokens.length) return;
 
   const barberName = BARBER_LABELS[appt.barber] || appt.barber || "";
@@ -62,6 +64,13 @@ exports.onNewAppointment = onDocumentCreated("appointments/{appointmentId}", asy
         icon: "/icons/logo-192.png",
       },
     },
+  });
+
+  logger.info(`onNewAppointment: ${response.successCount} başarılı, ${response.failureCount} başarısız gönderim.`);
+  response.responses.forEach((r, i) => {
+    if (!r.success) {
+      logger.warn(`onNewAppointment: token ${tokens[i]} gönderim hatası: ${r.error && r.error.code} - ${r.error && r.error.message}`);
+    }
   });
 
   const staleTokens = [];

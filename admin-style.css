@@ -277,6 +277,8 @@ a { text-decoration: none; color: inherit; }
   color: var(--gold);
 }
 .sidebar-install:hover { background: rgba(201,168,76,0.15); color: var(--gold); }
+.sidebar-install.notify-on { background: rgba(76,201,110,0.1); color: #4dd979; }
+.sidebar-install.notify-on:hover { background: rgba(76,201,110,0.18); }
 .sidebar-badge {
   margin-left: auto;
   background: var(--orange);

@@ -48,13 +48,55 @@ function initAdmin() {
 }
 
 // ── Push bildirimleri (yeni randevu geldiğinde) ──
-async function setupPushNotifications() {
-  if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
+function setupPushNotifications() {
+  const btn   = document.getElementById('notifyBtn');
+  const label = document.getElementById('notifyBtnLabel');
+  if (!btn || !label) return;
+
+  if (!('serviceWorker' in navigator) || !('Notification' in window)) {
+    btn.hidden = true;
+    return;
+  }
   if (VAPID_KEY === "BURAYA_VAPID_KEY_YAPISTIR") {
     console.warn('VAPID_KEY tanımlanmadı, push bildirimleri kurulmadı.');
+    btn.hidden = true;
     return;
   }
 
+  updateNotifyButton();
+
+  btn.addEventListener('click', async () => {
+    if (Notification.permission === 'denied') {
+      alert('Bildirimler tarayıcı ayarlarından engellenmiş görünüyor. Adres çubuğundaki kilit/site bilgisi simgesinden bildirim iznini "İzin ver" olarak değiştirip sayfayı yenileyin.');
+      return;
+    }
+    label.textContent = 'Açılıyor...';
+    await registerPushToken();
+    updateNotifyButton();
+  });
+
+  // İzin zaten verilmişse (önceki ziyaretten) token'ı sessizce tazele.
+  if (Notification.permission === 'granted') registerPushToken();
+}
+
+function updateNotifyButton() {
+  const btn   = document.getElementById('notifyBtn');
+  const label = document.getElementById('notifyBtnLabel');
+  if (!btn || !label) return;
+
+  if (Notification.permission === 'granted') {
+    label.textContent = 'Bildirimler Açık ✓';
+    btn.classList.add('notify-on');
+  } else if (Notification.permission === 'denied') {
+    label.textContent = 'Bildirimler Engelli';
+    btn.classList.remove('notify-on');
+  } else {
+    label.textContent = 'Bildirimleri Aç';
+    btn.classList.remove('notify-on');
+  }
+}
+
+async function registerPushToken() {
   try {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') return;
@@ -75,6 +117,7 @@ async function setupPushNotifications() {
     }
   } catch (err) {
     console.error('Push bildirim kurulumu başarısız:', err);
+    alert('Bildirimler açılamadı, lütfen tekrar deneyin.');
   }
 }
 
