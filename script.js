@@ -4,18 +4,30 @@
 // ============================================
 
 import Lenis from "https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.mjs";
-import { db } from "./firebase-config.js";
+import { db, app } from "./firebase-config.js";
 import {
   collection,
   addDoc,
-  getDocs,
-  query,
-  where,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getFunctions,
+  httpsCallable
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-functions.js";
+
+const functions      = getFunctions(app, 'europe-west1');
+const getBusySlotsFn = httpsCallable(functions, 'getBusySlots');
 
 // ── Firestore: dolu saatleri güncelle (berber bazlı) ──
 const TOTAL_BARBERS = 4;
+
+// Bir tarih için { "11:30": ["fatihtuncer", "any"], ... } şeklinde dolu saat/berber
+// eşlemesini Cloud Function üzerinden çeker. Bu sayede müşteri tarafı isim/telefon
+// gibi kişisel verilere hiç erişmiyor — Firestore'dan doğrudan okuma yapılmıyor.
+async function fetchBusyByTime(dateStr) {
+  const result = await getBusySlotsFn({ date: dateStr });
+  return result.data.byTime || {};
+}
 
 async function updateBusySlots(dateStr, selectedBarber = 'any') {
   const slotsContainer    = document.getElementById('timeSlots');
@@ -34,18 +46,7 @@ async function updateBusySlots(dateStr, selectedBarber = 'any') {
   slotsContainer.style.pointerEvents = 'none';
 
   try {
-    const q        = query(collection(db, 'appointments'), where('date', '==', dateStr));
-    const snapshot = await getDocs(q);
-
-    // İptal edilmişleri çıkar, saate göre grupla: { "11:30": ["ahmet", "any"], ... }
-    const byTime = {};
-    snapshot.docs.forEach(d => {
-      const data = d.data();
-      if (data.status === 'rejected') return;
-      if (!byTime[data.time]) byTime[data.time] = [];
-      byTime[data.time].push(data.barber);
-    });
-
+    const byTime = await fetchBusyByTime(dateStr);
     const busyTimes = new Set();
 
     Object.entries(byTime).forEach(([time, barbers]) => {
@@ -347,21 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         // Son kontrol: o saat hâlâ bu berber için boş mu?
-        const checkQ    = query(
-          collection(db, 'appointments'),
-          where('date', '==', formData.date),
-          where('time', '==', formData.time)
-        );
-        const checkSnap = await getDocs(checkQ);
-        const existing  = checkSnap.docs
-          .map(d => d.data())
-          .filter(d => d.status !== 'rejected');
+        const byTime  = await fetchBusyByTime(formData.date);
+        const barbers = byTime[formData.time] || [];
 
         let conflict = false;
         if (formData.barber === 'any') {
-          conflict = existing.length >= TOTAL_BARBERS;
+          conflict = barbers.length >= TOTAL_BARBERS;
         } else {
-          conflict = existing.some(d => d.barber === formData.barber);
+          conflict = barbers.includes(formData.barber);
         }
 
         if (conflict) {

@@ -1,9 +1,37 @@
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
 
 initializeApp();
+
+const REGION = "europe-west1";
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// Müşteri tarafındaki takvim için: hangi saatler hangi berberde dolu.
+// Sadece { time, barber, status } döner — isim/telefon/not gibi kişisel
+// veriler client'a asla gönderilmez (appointments koleksiyonu artık
+// doğrudan client'tan okunamıyor, bkz. firestore.rules).
+exports.getBusySlots = onCall({ region: REGION }, async (request) => {
+  const date = request.data && request.data.date;
+  if (typeof date !== "string" || !DATE_RE.test(date)) {
+    throw new HttpsError("invalid-argument", "Geçersiz tarih formatı.");
+  }
+
+  const db = getFirestore();
+  const snap = await db.collection("appointments").where("date", "==", date).get();
+
+  const byTime = {};
+  snap.forEach((doc) => {
+    const data = doc.data();
+    if (data.status === "rejected") return;
+    if (!byTime[data.time]) byTime[data.time] = [];
+    byTime[data.time].push(data.barber);
+  });
+
+  return { byTime };
+});
 
 const BARBER_LABELS = {
   fatihtuncer: "Fatih Tuncer",

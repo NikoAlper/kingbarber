@@ -253,7 +253,7 @@ function showDbError(err) {
         <td colspan="6" class="table-loading" style="color:#ff8080">
           ⚠️ Veriler yüklenemedi: <strong>${err.code || err.message}</strong><br>
           <small style="color:#888;margin-top:6px;display:block">
-            Firebase Console → Firestore → Rules → <code>allow read, write: if true;</code> olarak güncelleyin
+            Bu hesabın yönetici yetkisi yok gibi görünüyor. Doğru hesapla giriş yaptığınızdan emin olun.
           </small>
         </td>
       </tr>`;
