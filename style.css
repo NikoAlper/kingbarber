@@ -926,15 +926,45 @@ section { padding: 120px 0; }
 .team-card:hover .team-image-semsettin { transform: scale(1.61); }
 .team-social {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  padding: 22px 14px 12px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  left: 14px;
+  bottom: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px 7px 9px;
+  border-radius: 999px;
+  background: rgba(10,10,10,0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.75);
-  letter-spacing: 0.05em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: team-social-in 0.6s ease forwards;
+  animation-delay: 0.4s;
+  transition: background 0.35s, border-color 0.35s, transform 0.25s, box-shadow 0.35s;
+}
+.team-social svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: transform 0.35s;
+}
+.team-social:hover {
+  background: linear-gradient(45deg, #f9ce34, #ee2a7b 45%, #6228d7);
+  border-color: transparent;
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 8px 20px rgba(238,42,123,0.35);
+}
+.team-social:hover svg { transform: rotate(-8deg) scale(1.1); }
+@keyframes team-social-in {
+  to { opacity: 1; transform: translateY(0); }
 }
 .team-info { padding: 24px; }
 .team-info h3 { font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 4px; }
