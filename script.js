@@ -301,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   dateInput?.addEventListener('change', refreshSlots);
+  refreshSlots(); // datepicker açılışta bugünü seçtiği için müsaitliği hemen yükle
 
   // Berber radio butonları değişince de güncelle
   document.querySelectorAll('input[name="barber"]').forEach(radio => {
@@ -575,4 +576,7 @@ function initDatepicker(hiddenInput) {
   document.addEventListener('click', e => {
     if (!document.getElementById('customDatepicker')?.contains(e.target)) close();
   });
+
+  // Açılışta bugünün tarihi otomatik seçili gelsin
+  selectDate(todayStr);
 }

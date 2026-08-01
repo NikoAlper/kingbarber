@@ -317,17 +317,18 @@ a { text-decoration: none; color: inherit; }
   color: var(--red);
 }
 .hours-panel .time-slot.slot-booked {
-  background: rgba(136,136,136,0.1);
-  border-color: var(--border);
-  color: var(--gray);
+  background: rgba(224,85,85,0.12);
+  border-color: rgba(224,85,85,0.4);
+  color: var(--red);
   cursor: not-allowed;
+  opacity: 0.75;
 }
 .hours-legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.8rem; color: var(--gray); }
 .hours-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .hours-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .hours-dot.dot-open    { background: var(--dark4); border: 1px solid var(--border); }
 .hours-dot.dot-blocked { background: var(--red); }
-.hours-dot.dot-booked  { background: var(--gray); }
+.hours-dot.dot-booked  { background: var(--red); opacity: 0.75; }
 .sidebar-badge {
   margin-left: auto;
   background: var(--orange);
