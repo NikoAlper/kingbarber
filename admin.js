@@ -1,7 +1,3 @@
-// ============================================
-// admin.js — King Barber Admin Panel
-// ============================================
-
 import { db, app, auth, USERNAME_TO_BARBER } from "./firebase-config.js";
 import {
   collection,
@@ -24,12 +20,10 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Firebase Console → Project Settings → Cloud Messaging → Web Push certificates'tan alınır
 const VAPID_KEY = "BIiw-2oMjZn79Xi3SJ0-ajdGZSCRYrma4FZnxOxlQ3wZC-55kzJRrEKPvAqCH2XwA4XxdPp2k7bFZRDYNaES4IE";
 
-// ── Auth guard: gerçek Firebase Authentication oturumu yoksa login'e yönlendir ──
 const USER_KEY = "kb_admin_user";
-let currentBarber = null; // giriş yapan berberin randevu formundaki ID'si (fatihtuncer/usta1/usta2/usta3)
+let currentBarber = null;
 
 onAuthStateChanged(auth, user => {
   if (!user) {
@@ -41,7 +35,7 @@ onAuthStateChanged(auth, user => {
   initAdmin();
 });
 
-// ── Uygulama başlangıcı ──
+// Uygulama başlangıcı
 function initAdmin() {
   setupUserInfo();
   setupNavigation();
@@ -54,7 +48,7 @@ function initAdmin() {
   setupHoursSection();
 }
 
-// ── Push bildirimleri (yeni randevu geldiğinde) ──
+// Push bildirimleri
 function setupPushNotifications() {
   const btn   = document.getElementById('notifyBtn');
   const label = document.getElementById('notifyBtnLabel');
@@ -82,7 +76,6 @@ function setupPushNotifications() {
     updateNotifyButton();
   });
 
-  // İzin zaten verilmişse (önceki ziyaretten) token'ı sessizce tazele.
   if (Notification.permission === 'granted') registerPushToken();
 }
 
@@ -128,7 +121,7 @@ async function registerPushToken() {
   }
 }
 
-// PWA kurulumu (buton sadece yönetici panelinde görünür)
+// PWA kurulumu
 function setupAppInstall() {
   const installBtn = document.getElementById('installAppBtn');
   const modal = document.getElementById('installModal');
@@ -203,7 +196,7 @@ function setupAppInstall() {
   });
 }
 
-// ── Kullanıcı bilgisi ──
+// Kullanıcı bilgisi
 function setupUserInfo() {
   const displayName = sessionStorage.getItem(USER_KEY) || 'Yönetici';
   const emailEl     = document.getElementById('userEmail');
@@ -212,7 +205,7 @@ function setupUserInfo() {
   if (avatarEl) avatarEl.textContent = displayName.charAt(0).toUpperCase();
 }
 
-// ── Navigasyon ──
+// Navigasyon
 function setupNavigation() {
   const links    = document.querySelectorAll('.sidebar-link[data-section]');
   const sections = document.querySelectorAll('.admin-section');
@@ -229,7 +222,6 @@ function setupNavigation() {
     link.addEventListener('click', e => { e.preventDefault(); goTo(link.dataset.section); });
   });
 
-  // Dashboard panel "tümünü gör" linkleri
   document.querySelectorAll('[data-goto]').forEach(btn => {
     btn.addEventListener('click', () => goTo(btn.dataset.goto));
   });
@@ -247,7 +239,7 @@ function setupLogout() {
   document.getElementById('mobileLogoutBtn')?.addEventListener('click', doLogout);
 }
 
-// ── Mobil sidebar ──
+// Mobil sidebar
 function setupSidebarMobile() {
   const sidebar  = document.getElementById('sidebar');
   const overlay  = document.getElementById('sidebarOverlay');
@@ -263,7 +255,7 @@ function setupSidebarMobile() {
   });
 }
 
-// ── Dashboard tarih ──
+// Dashboard tarih
 function setupDashboardDate() {
   const now = new Date();
   const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -275,11 +267,10 @@ function setupDashboardDate() {
   if (todayEl) todayEl.textContent = label;
 }
 
-// ── Randevu yükleme (gerçek zamanlı) ──
+// Randevu yükleme
 let allAppointments = [];
 
 function loadAllAppointments() {
-  // orderBy kaldırıldı — composite index gerektirmez, sıralama client-side yapılır
   const q = query(collection(db, 'appointments'));
 
   onSnapshot(q, snapshot => {
@@ -311,7 +302,7 @@ function showDbError(err) {
   }
 }
 
-// ── Randevu saat ayarları (kendi saatini kapat/aç) ──
+// Randevu saat ayarları
 function setupHoursSection() {
   const dateInput = document.getElementById('hoursDate');
   const container  = document.getElementById('hoursTimeSlots');
@@ -414,10 +405,10 @@ async function toggleHourSlot(dateStr, time, isBlocked) {
   }
 }
 
-// ── İstatistikler ──
+// İstatistikler
 function updateStats() {
   const todayStr = todayISOString();
-  const monthStr = todayStr.slice(0, 7); // YYYY-MM
+  const monthStr = todayStr.slice(0, 7);
 
   const todayAppts    = allAppointments.filter(a => a.date === todayStr);
   const pendingAppts  = allAppointments.filter(a => a.status === 'pending');
@@ -439,7 +430,7 @@ function updatePendingBadge() {
   }
 }
 
-// ── Dashboard panelleri ──
+// Dashboard panelleri
 function renderDashboardPanels() {
   const todayStr  = todayISOString();
   const todayList = allAppointments.filter(a => a.date === todayStr);
@@ -470,7 +461,7 @@ function renderCompactList(containerId, appts, emptyMsg) {
   `).join('');
 }
 
-// ── Randevular tablosu ──
+// Randevular tablosu
 let currentFilter = { status: 'all', barber: 'all', date: '' };
 
 function renderAppointmentsTable(filter = currentFilter) {
@@ -483,7 +474,6 @@ function renderAppointmentsTable(filter = currentFilter) {
   if (filter.barber !== 'all') data = data.filter(a => a.barber === filter.barber);
   if (filter.date)             data = data.filter(a => a.date === filter.date);
 
-  // En yakın tarih önce
   data.sort((a, b) => {
     const da = (a.date || '') + (a.time || '');
     const db2 = (b.date || '') + (b.time || '');
@@ -563,7 +553,7 @@ function setupFilters() {
   });
 }
 
-// ── Bugün timeline ──
+// Bugün timeline
 function renderTodayTimeline() {
   const container = document.getElementById('todayTimeline');
   if (!container) return;
@@ -600,14 +590,13 @@ function renderTodayTimeline() {
   }).join('');
 }
 
-// ── Durum güncelleme ──
+// Durum güncelleme
 window.updateStatus = async function(id, newStatus) {
   try {
     await updateDoc(doc(db, 'appointments', id), {
       status: newStatus,
       updatedAt: serverTimestamp()
     });
-    // Modal açıksa kapat
     closeModal();
   } catch (err) {
     console.error('Durum güncellenemedi:', err);
@@ -615,7 +604,7 @@ window.updateStatus = async function(id, newStatus) {
   }
 };
 
-// ── Müşteriye WhatsApp mesajı gönderme ──
+// Müşteriye WhatsApp mesajı gönderme
 window.sendAppointmentMessage = function(id) {
   const appointment = allAppointments.find(a => a.id === id);
   if (!appointment) return;
@@ -651,7 +640,7 @@ function normalizeWhatsAppPhone(value) {
   return digits.length >= 10 && digits.length <= 15 ? digits : '';
 }
 
-// ── Detail Modal ──
+// Detail Modal
 window.openDetail = function(id) {
   const a = allAppointments.find(ap => ap.id === id);
   if (!a) return;
@@ -724,7 +713,7 @@ document.getElementById('detailModal')?.addEventListener('click', e => {
   if (e.target.id === 'detailModal') closeModal();
 });
 
-// ── Yardımcı fonksiyonlar ──
+// Yardımcı fonksiyonlar
 function todayISOString() {
   return new Date().toISOString().split('T')[0];
 }

@@ -1,7 +1,3 @@
-// ============================================
-// admin-login.js — Hardcoded giriş sistemi
-// ============================================
-
 import { auth, USERNAME_TO_EMAIL, DISPLAY_NAMES } from "./firebase-config.js";
 import {
   onAuthStateChanged,
@@ -10,7 +6,6 @@ import {
 
 const USER_KEY = "kb_admin_user";
 
-// Zaten giriş yapılmışsa direkt yönlendir
 onAuthStateChanged(auth, user => {
   if (user) window.location.href = "admin.html";
 });
@@ -22,7 +17,6 @@ const loginBtn      = document.getElementById('loginBtn');
 const loginError    = document.getElementById('loginError');
 const togglePwd     = document.getElementById('togglePassword');
 
-// Şifreyi göster/gizle
 togglePwd.addEventListener('click', () => {
   const isText = passwordInput.type === 'text';
   passwordInput.type = isText ? 'password' : 'text';
@@ -30,7 +24,6 @@ togglePwd.addEventListener('click', () => {
   togglePwd.querySelector('.eye-hide').style.display = isText ? 'none' : '';
 });
 
-// Giriş formu
 form.addEventListener('submit', async e => {
   e.preventDefault();
   clearError();

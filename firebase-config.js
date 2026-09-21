@@ -1,9 +1,3 @@
-// ============================================
-// firebase-config.js — Firebase yapılandırması
-// Firebase konsolundan aldığınız değerleri
-// aşağıdaki alanlara yapıştırın.
-// ============================================
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -22,9 +16,6 @@ export const app  = initializeApp(firebaseConfig);
 export const db   = getFirestore(app);
 export const auth = getAuth(app);
 
-// ── Berber giriş eşlemesi ──────────────────────
-// Şifreler artık burada YOK — Firebase Authentication'da saklanıyor.
-// Kullanıcı adı, Auth'ta kayıtlı email'e eşleniyor.
 export const USERNAME_TO_EMAIL = {
   "fatihtuncer":     "fatihtuncer@kingbarber.local",
   "semsettinsancak": "semsettinsancak@kingbarber.local",
@@ -39,8 +30,6 @@ export const DISPLAY_NAMES = {
   "beratozbakir":    "Berat Özbakır",
 };
 
-// Randevu formundaki "barber" alanı, giriş kullanıcı adından farklı ID'ler kullanıyor
-// (index.html'deki radio value'ları ile eşleşir).
 export const USERNAME_TO_BARBER = {
   "fatihtuncer":     "fatihtuncer",
   "semsettinsancak": "usta1",

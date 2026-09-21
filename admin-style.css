@@ -328,7 +328,7 @@ a { text-decoration: none; color: inherit; }
 .hours-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .hours-dot.dot-open    { background: var(--dark4); border: 1px solid var(--border); }
 .hours-dot.dot-blocked { background: var(--red); }
-.hours-dot.dot-booked  { background: var(--red); opacity: 0.75; }
+.hours-dot.dot-booked  { background: var(--gray); }
 .sidebar-badge {
   margin-left: auto;
   background: var(--orange);
